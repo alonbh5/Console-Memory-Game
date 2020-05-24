@@ -44,6 +44,7 @@
     <Compile Include="Borad.cs" />
     <Compile Include="ConsoleUI.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Tile.cs" />
   </ItemGroup>
