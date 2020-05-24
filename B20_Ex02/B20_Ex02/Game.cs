@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
+
 
 namespace B20_Ex02
 {
@@ -26,12 +27,40 @@ namespace B20_Ex02
 
         public Player Player1
         {
-            get { return Player1; }
+            get { return m_Player1; }
         }
 
         public Player Player2
         {
-            get { return Player2; }
+            get { return m_Player2; }
+        }
+
+        internal void Revele(int i_Row, int i_Col)
+        {
+            m_GameBoard.Expose(i_Row, i_Col);
+        }
+        internal void Unrevele(int i_Row1, int i_Col1, int i_Row2, int i_Col2)
+        {
+            m_GameBoard.Unexpose(i_Row1, i_Col1);
+            m_GameBoard.Unexpose(i_Row2, i_Col2);
+        }
+
+        internal bool checkTurn(int i_Row1, int i_Col1, int i_Row2, int i_Col2,Player i_player)
+        {
+            bool res = false;
+            if (m_GameBoard.checkPair(i_Row1,i_Col1,i_Row2,i_Col2))
+            {
+                i_player.Pairs++;
+                m_GameBoard.PairFound();
+                res = true;
+            }
+            else
+            {
+                Thread.Sleep(2000);
+                Unrevele(i_Row1, i_Col1, i_Row2, i_Col2);
+            }
+
+            return res;
         }
 
     }

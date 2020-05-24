@@ -41,6 +41,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI.cs" />
     <Compile Include="Borad.cs" />
     <Compile Include="ConsoleUI.cs" />
     <Compile Include="Game.cs" />

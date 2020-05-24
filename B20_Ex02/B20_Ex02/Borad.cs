@@ -134,10 +134,25 @@ namespace B20_Ex02
             return (m_ExposesPairs == m_TotalPairs);
         }
 
-
-        internal void Expose(int o_Row, int o_Col)
+        internal void PairFound ()
         {
-            // m_GameBoard[o_Row,o_Col]
+            if (m_TotalPairs!=m_ExposesPairs)
+            {
+                m_ExposesPairs++;
+            }
+        }
+
+        internal void Expose(int i_Row, int i_Col)
+        {
+            m_Board[i_Row, i_Col].Expose = true;
+        }
+        internal void Unexpose(int i_Row, int i_Col)
+        {
+            m_Board[i_Row, i_Col].Expose = false;
+        }
+        internal bool checkPair(int i_Row1, int i_Col1, int i_Row2, int i_Col2)
+        {
+            return (m_Board[i_Row1, i_Col1].Value == m_Board[i_Row2, i_Col2].Value);
         }
     }
 }

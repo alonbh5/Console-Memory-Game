@@ -11,6 +11,7 @@ namespace B20_Ex02
         string m_Name;
         bool m_Pc;
         int m_Pairs;
+        
 
         internal Player(string name, bool pc)
         {
@@ -21,6 +22,17 @@ namespace B20_Ex02
         public string Name
         {
             get { return m_Name; }
+        }
+
+        public int Pairs
+        {
+            get { return m_Pairs; }
+            set { m_Pairs++; }
+        }
+
+        public bool Pc
+        {
+            get { return m_Pc; }
         }
     }
 }
