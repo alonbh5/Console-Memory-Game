@@ -8,7 +8,7 @@ namespace B20_Ex02
 {
     class Board
     {
-        Tile[,] m_Board;
+        internal Tile[,] m_Board;
         int m_Rows;
         int m_Cols;
         int m_TotalPairs;

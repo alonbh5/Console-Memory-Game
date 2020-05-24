@@ -11,12 +11,17 @@ namespace B20_Ex02
         string m_Name;
         bool m_Pc;
         int m_Pairs;
+        internal AI m_pvc;
         
 
         internal Player(string name, bool pc)
         {
             m_Name = name;
             m_Pc = pc;
+            if (pc)
+            {
+                m_pvc = new AI();
+            }
         }
 
         public string Name

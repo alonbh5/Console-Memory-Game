@@ -42,7 +42,8 @@ namespace B20_Ex02
 
         public void PlayGame()
         {
-            bool turn = true;
+            bool turnPlayer1 = true;
+            Player CurrentPlayer=m_Game.Player1;
             bool pvc = false;
             string prompt = string.Empty;
             int row1 = 0, col1 = 0, row2 = 0, col2 = 0;
@@ -52,44 +53,51 @@ namespace B20_Ex02
             //from here move to GAME
             while (!m_Game.m_GameBoard.isGameOver())
             {
-                if (turn)
+                if (turnPlayer1)
                 {
-                    Console.WriteLine("{0}'s turn:\n", m_Game.Player1.Name);
+                    CurrentPlayer = m_Game.Player1;                    
                     pvc = false;
                 }
                 else
                 {
-                    Console.WriteLine("{0}'s turn:\n", m_Game.Player2.Name);  ///if pc AI
+                    CurrentPlayer = m_Game.Player2;                    
                     if (m_Game.Player2.Pc)
+                    {
                         pvc = true;
+                    }
                 }
-
+                Console.WriteLine("{0}'s turn:\n", CurrentPlayer.Name);
                 getInput(pvc,ref row1, ref col1);
                 m_Game.Revele(row1, col1);
+                if (pvc && !turnPlayer1)
+                {
+                    //this is turn of player 2 and player 2= AI ->need to update memeory of Ai
+                    m_Game.Player2.m_pvc.updateMemory(row1, col1, m_Game.m_GameBoard.m_Board[row1, col1]);
+
+                }
                 printGameBoard();
                 getInput(pvc,ref row2, ref col2);
-                m_Game.Revele(row2, col2);
+                m_Game.Revele(row2, col2);                
                 printGameBoard();
 
                 // put in Game m_Game.Expose(row, col); //expose (board) -> print(UI) ->expose -> print ->check pair (board) 
                 //if check=true -> pair++ (board and player)
                 //else unexpose->print
 
-                if (turn)
-                {                    
-                    if(!m_Game.checkTurn(row1, col1, row2, col2, m_Game.Player1))
-                    {
-                        turn = !turn;
-                    }
 
-                }
-                else 
+                if (!m_Game.checkTurn(row1, col1, row2, col2, CurrentPlayer))
                 {
-                    if (!m_Game.checkTurn(row1, col1, row2, col2, m_Game.Player2))
+                    turnPlayer1 = !turnPlayer1;
+                    if (!pvc)
                     {
-                        turn = !turn;
+                        //case not won and not AI turn
+                        m_Game.Player2.m_pvc.updateMemory(row1, col1, m_Game.m_GameBoard.m_Board[row1, col1]);
                     }
+                    m_Game.Player2.m_pvc.updateMemory(row2, col2, m_Game.m_GameBoard.m_Board[row2, col2]);
                 }
+                    
+
+                
                 Ex02.ConsoleUtils.Screen.Clear();
                 Console.WriteLine(m_Game.m_GameBoard.ToStringBuilder());
                 
