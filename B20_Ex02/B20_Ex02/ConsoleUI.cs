@@ -69,20 +69,18 @@ namespace B20_Ex02
                 Console.WriteLine("{0}'s turn:\n", CurrentPlayer.Name);
                 getInput(pvc,ref row1, ref col1);
                 m_Game.Revele(row1, col1);
+                printGameBoard();
                 if (pvc && !turnPlayer1)
                 {
                     //this is turn of player 2 and player 2= AI ->need to update memeory of Ai
                     m_Game.Player2.m_pvc.updateMemory(row1, col1, m_Game.m_GameBoard.m_Board[row1, col1]);
 
-                }
-                printGameBoard();
+                }                
                 getInput(pvc,ref row2, ref col2);
                 m_Game.Revele(row2, col2);                
                 printGameBoard();
 
-                // put in Game m_Game.Expose(row, col); //expose (board) -> print(UI) ->expose -> print ->check pair (board) 
-                //if check=true -> pair++ (board and player)
-                //else unexpose->print
+                
 
 
                 if (!m_Game.checkTurn(row1, col1, row2, col2, CurrentPlayer))
@@ -95,12 +93,11 @@ namespace B20_Ex02
                     }
                     m_Game.Player2.m_pvc.updateMemory(row2, col2, m_Game.m_GameBoard.m_Board[row2, col2]);
                 }
-                    
 
-                
-                Ex02.ConsoleUtils.Screen.Clear();
-                Console.WriteLine(m_Game.m_GameBoard.ToStringBuilder());
-                
+
+
+                printGameBoard();
+
             }
             
         }
@@ -132,7 +129,10 @@ namespace B20_Ex02
             int.TryParse((turn[0] - 'A').ToString(), out io_Col);
             int.TryParse((turn[1] - '1').ToString(), out io_Row);
         }
-
+        private void getInputFromAI(ref int io_Row, ref int io_Col)
+        {
+            m_Game.Player2.m_pvc.PlayTurn(ref io_Row, ref io_Col, m_Game.m_GameBoard);
+        }
         public void printGameBoard ()
         {
             Ex02.ConsoleUtils.Screen.Clear();

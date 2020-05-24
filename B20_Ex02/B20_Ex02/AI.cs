@@ -46,7 +46,7 @@ namespace B20_Ex02
         Turns[] m_turnMem = new Turns[MAX_MEM];
         int m_turns = 0;
         int m_pairsMem = 0;
-        int m_indexToAdd = -1;
+        int m_indexToAdd = 0;
 
 
         public void PlayTurn(ref int io_row, ref int io_col, Board i_gameboard)
@@ -61,6 +61,7 @@ namespace B20_Ex02
                 {
                     smartchoice(ref io_row, ref io_col, index);
                     doRandom = false;
+                    
                 }
                 
             }            
@@ -80,6 +81,7 @@ namespace B20_Ex02
                 io_row = m_turnMem[i_index].row;
                 io_col = m_turnMem[i_index].col;
                 m_turnMem[i_index].sent = true;
+                m_turns--; //for seconde reveled by smart choice
             }
             else
             {
@@ -95,21 +97,28 @@ namespace B20_Ex02
         internal void updateMemory(int i_Row, int i_Col, Tile i_tile)
         {
             //Update AI Memory of tails that just got reveled on board
-            m_indexToAdd++;
+            //m_indexToAdd++;
             bool found = false;
 
             if (m_pairsMem != MAX_MEM) //if memeory is not full of pairs 
             {
                 for (int i = 0; i < m_turnMem.Length; i++) //find if the AI has seen this tile-pair before
                 {
-                    if ((m_turnMem[i].value == i_tile.Value) && (m_turnMem[i].row != i_Row && m_turnMem[i].col != i_Col))
+                    if (m_turnMem[i].value == i_tile.Value)
                     {
-                        m_turnMem[i].partner = true;
-                        m_turnMem[i].partnerCol = i_Col;
-                        m_turnMem[i].partnerRow = i_Row;
-                        m_pairsMem++;
+                        //found this value before
+                        if (m_turnMem[i].row != i_Row && m_turnMem[i].col != i_Col)
+                        {
+                            //case the other pair
+                            m_turnMem[i].partner = true;
+                            m_turnMem[i].partnerCol = i_Col;
+                            m_turnMem[i].partnerRow = i_Row;
+                            m_pairsMem++;                            
+                        }
+
                         found = true;
                         break;
+                    
                     }
                 }
 
@@ -119,7 +128,7 @@ namespace B20_Ex02
                     {
                         m_indexToAdd++;
                     }
-                    m_turnMem[m_indexToAdd % MAX_MEM] = new Turns(i_Row, i_Col, i_tile.Value);
+                    m_turnMem[m_indexToAdd++ % MAX_MEM] = new Turns(i_Row, i_Col, i_tile.Value);
                 }
 
             }
@@ -152,9 +161,24 @@ namespace B20_Ex02
         }
         private void randomchoice(ref int io_row, ref int io_col, Board i_gameboard)
         {
+            Random rnd = new Random();
+            int loc = 0;
+            int maxRnd = i_gameboard.Cols * i_gameboard.Rows;
+
+            do
+            {
+                loc = rnd.Next(maxRnd);                
+            } while (CheckRandomLocation(loc,ref io_row, ref io_col,i_gameboard));
 
         }
 
+        private bool CheckRandomLocation(int i_Num, ref int io_Row, ref int io_Col, Board i_gameboard)
+        {
+            io_Row = i_Num / i_gameboard.Cols;
+            io_Col = i_Num % i_gameboard.Cols;
+
+            return (i_gameboard.m_Board[io_Row, io_Col].Expose);
+        }
     }
 }
 
