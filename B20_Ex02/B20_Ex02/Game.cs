@@ -45,10 +45,10 @@ namespace B20_Ex02
             m_GameBoard.Unexpose(i_Row2, i_Col2);
         }
 
-        internal bool checkTurn(int i_Row1, int i_Col1, int i_Row2, int i_Col2,Player i_player)
+        internal bool checkTurn(int i_Row1, int i_Col1, int i_Row2, int i_Col2, Player i_player)
         {
             bool res = false;
-            if (m_GameBoard.checkPair(i_Row1,i_Col1,i_Row2,i_Col2))
+            if (m_GameBoard.checkPair(i_Row1, i_Col1, i_Row2, i_Col2))
             {
                 i_player.Pairs++;
                 m_GameBoard.PairFound();
@@ -63,5 +63,32 @@ namespace B20_Ex02
             return res;
         }
 
+        internal bool getWinner(out Player winner)
+        {
+            bool isTie = false;
+
+            if (m_Player1.Pairs == m_Player2.Pairs)
+            {
+                isTie = true;
+                winner = m_Player1;
+            }
+
+            if (m_Player1.Pairs > m_Player2.Pairs)
+            {
+                winner = m_Player1;
+            }
+            else
+            {
+                winner = m_Player2;
+            }
+
+            return isTie;
+
+        }
+
+        internal bool checkTile(int io_Col, int io_Row)
+        {
+            return (!m_GameBoard.m_Board[io_Row, io_Col].Expose);
+        }
     }
 }
