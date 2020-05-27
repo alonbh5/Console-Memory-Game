@@ -5,180 +5,168 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-
-
 namespace B20_Ex02
 {
-
-
-    struct Turns
+    struct AIMemCell
     {
+        internal int m_Row;
+        internal int m_Col;
+        internal int m_Value;
+        internal bool m_PairFound;
+        internal int m_PairRow;
+        internal int m_PairCol;
+        internal bool m_SentFirstLoc;
 
-        internal int row;
-        internal int col;
-        internal int value;
-        internal bool partner;
-        internal int partnerRow;
-        internal int partnerCol;
-        internal bool sent;
-
-
-        internal Turns(int i_row, int i_col, int i_value)
+        internal AIMemCell(int i_Row, int i_Col, int i_Value)
         {
-
-            row = i_row;
-            col = i_col;
-            value = i_value;
-            partner = false;
-            sent = false;
-            partnerCol = -1;
-            partnerRow = -1;
-
+            m_Row = i_Row;
+            m_Col = i_Col;
+            m_Value = i_Value;
+            m_PairFound = false;
+            m_SentFirstLoc = false;
+            m_PairCol = -1;
+            m_PairRow = -1;
         }
     }
 
-
     class AI
     {
-        const int MAX_MEM = 6;
-        const int NOT_FOUND = -1; //bla
+        private const int k_MaxMem = 6;
+        private const int k_NotFound = -1;
 
-        Turns[] m_turnMem = new Turns[MAX_MEM];
-        int m_turns = 0;
-        int m_pairsMem = 0;
-        int m_indexToAdd = 0;
+        AIMemCell[] m_AIMem = new AIMemCell[k_MaxMem];
+        int m_Turns = 0;
+        bool m_DoSmartChoice = false;
+        int m_PairsInMem = 0;
+        int m_IndexToAdd = 0;
 
-
-        public void PlayTurn(ref int io_row, ref int io_col, Board i_gameboard)
+        public void PlayTurn(ref int io_Row, ref int io_Col, Board i_Gameboard)
         {
-            bool doRandom = true;
-            m_turns++;
+            bool isRandom = true;
+            m_Turns++;
 
-            if (m_turns % 3 == 0 && m_pairsMem > 0)
-            { // Play smart every 3 turns and if there is a pair in memory
-                int index = MemoryInRealTime(i_gameboard);
-                if (index != NOT_FOUND)
+            if (m_Turns % 3 == 0)
+            { // Play smart every 3 turns.
+                m_DoSmartChoice = true;
+            } 
+
+            if (m_DoSmartChoice && m_PairsInMem > 0)
+            { // And if there is a pair in memory
+                int index = memoryInRealTime(i_Gameboard);
+                if (index != k_NotFound)
                 {
-                    smartchoice(ref io_row, ref io_col, index);
-                    doRandom = false;
-                    
+                    smartChoice(ref io_Row, ref io_Col, index);
+                    isRandom = false;
                 }
-                
-            }            
+            }
 
-            if (doRandom)
+            if (isRandom)
             {
-                randomchoice(ref io_row, ref io_col, i_gameboard);
+                randomChoice(ref io_Row, ref io_Col, i_Gameboard);
             }
         }
 
-        private void smartchoice(ref int io_row, ref int io_col, int i_index)
+        private void smartChoice(ref int io_Row, ref int io_Col, int i_Index)
         {
 
-            if (!m_turnMem[i_index].sent)
+            if (!m_AIMem[i_Index].m_SentFirstLoc)
             {
                 //send the first coordiante
-                io_row = m_turnMem[i_index].row;
-                io_col = m_turnMem[i_index].col;
-                m_turnMem[i_index].sent = true;
-                m_turns--; //for seconde reveled by smart choice
+                io_Row = m_AIMem[i_Index].m_Row;
+                io_Col = m_AIMem[i_Index].m_Col;
+                m_AIMem[i_Index].m_SentFirstLoc = true;
+                m_Turns--; //for seconde reveled by smart choice
             }
             else
             {
-                io_row = m_turnMem[i_index].partnerRow;
-                io_col = m_turnMem[i_index].partnerCol;
-                m_pairsMem--;
-                m_turnMem[i_index].partner = false;
-                m_indexToAdd = i_index;
-
+                io_Row = m_AIMem[i_Index].m_PairRow;
+                io_Col = m_AIMem[i_Index].m_PairCol;
+                m_PairsInMem--;
+                m_AIMem[i_Index].m_PairFound = false;
+                m_IndexToAdd = i_Index;
+                m_DoSmartChoice = false;
             }
-                    
-        }
-        internal void updateMemory(int i_Row, int i_Col, Tile i_tile)
-        {
-            //Update AI Memory of tails that just got reveled on board
-            //m_indexToAdd++;
-            bool found = false;
 
-            if (m_pairsMem != MAX_MEM) //if memeory is not full of pairs 
+        }
+
+        internal void updateMemory(int i_Row, int i_Col, Tile i_Tile)
+        { // Update AI Memory of tails that just got reveled on board
+            bool isFound = false;
+
+            if (m_PairsInMem != k_MaxMem) //if memeory is not full of pairs 
             {
-                for (int i = 0; i < m_turnMem.Length; i++) //find if the AI has seen this tile-pair before
+                for (int i = 0; i < m_AIMem.Length; i++) //find if the AI has seen this tile-pair before
                 {
-                    if (m_turnMem[i].value == i_tile.Value)
-                    {
-                        //found this value before
-                        if (m_turnMem[i].row != i_Row && m_turnMem[i].col != i_Col)
-                        {
-                            //case the other pair
-                            m_turnMem[i].partner = true;
-                            m_turnMem[i].partnerCol = i_Col;
-                            m_turnMem[i].partnerRow = i_Row;
-                            m_pairsMem++;                            
+                    if (m_AIMem[i].m_Value == i_Tile.m_Value)
+                    { // found this value before
+                        if (m_AIMem[i].m_Row != i_Row && m_AIMem[i].m_Col != i_Col)
+                        { // case the other pair
+                            m_AIMem[i].m_PairFound = true;
+                            m_AIMem[i].m_PairCol = i_Col;
+                            m_AIMem[i].m_PairRow = i_Row;
+                            m_PairsInMem++;
                         }
 
-                        found = true;
+                        isFound = true;
                         break;
-                    
                     }
                 }
 
-                if (!found) //case not seen this tile before - lets remember it
+                if (!isFound) //case not seen this tile before - lets remember it
                 {
-                    while (m_turnMem[m_indexToAdd % MAX_MEM].partner)
+                    while (m_AIMem[m_IndexToAdd % k_MaxMem].m_PairFound)
                     {
-                        m_indexToAdd++;
+                        m_IndexToAdd++;
                     }
-                    m_turnMem[m_indexToAdd++ % MAX_MEM] = new Turns(i_Row, i_Col, i_tile.Value);
+                    m_AIMem[m_IndexToAdd++ % k_MaxMem] = new AIMemCell(i_Row, i_Col, i_Tile.m_Value);
                 }
 
             }
         }
-        private int MemoryInRealTime(Board i_gameboard)
-        {
-            //case AI remember a pair for sure
-            int res = NOT_FOUND;
+        private int memoryInRealTime(Board i_Gameboard)
+        { // case AI remember a pair for sure
+            int res = k_NotFound;
 
-            for (int i = 0; i < m_turnMem.Length; i++)
+            for (int i = 0; i < m_AIMem.Length; i++)
             {
-                if (m_turnMem[i].partner)
+                if (m_AIMem[i].m_PairFound)
                 {
-                    if (!(i_gameboard.m_Board[m_turnMem[i].partnerRow, m_turnMem[i].partnerCol].Expose))
+                    if (!(i_Gameboard.m_Board[m_AIMem[i].m_PairRow, m_AIMem[i].m_PairCol].Expose))
                     {
                         res = i;
                         break;
                     }
                     else
-                    {
-                        //case the pair AI remembers was found before AI
-                        m_pairsMem--;
-                        m_turnMem[i].partner = false;
-                        m_indexToAdd = i;
-
+                    { // case the pair that the AI remembers was already found by other player
+                        m_PairsInMem--;
+                        m_AIMem[i].m_PairFound = false;
+                        m_IndexToAdd = i;
                     }
-                }                
+                }
             }
+
             return res;
         }
-        private void randomchoice(ref int io_row, ref int io_col, Board i_gameboard)
+
+        private void randomChoice(ref int io_Row, ref int io_Col, Board i_Gameboard)
         {
             Random rnd = new Random();
             int loc = 0;
-            int maxRnd = i_gameboard.Cols * i_gameboard.Rows;
+            int maxRnd = i_Gameboard.Cols * i_Gameboard.Rows;
 
             do
             {
-                loc = rnd.Next(maxRnd);                
-            } while (CheckRandomLocation(loc,ref io_row, ref io_col,i_gameboard));
+                loc = rnd.Next(maxRnd);
+            } while (checkRandomLocation(loc, ref io_Row, ref io_Col, i_Gameboard));
 
         }
 
-        private bool CheckRandomLocation(int i_Num, ref int io_Row, ref int io_Col, Board i_gameboard)
+        private bool checkRandomLocation(int i_Num, ref int io_Row, ref int io_Col, Board i_Gameboard)
         {
-            io_Row = i_Num / i_gameboard.Cols;
-            io_Col = i_Num % i_gameboard.Cols;
+            io_Row = i_Num / i_Gameboard.Cols;
+            io_Col = i_Num % i_Gameboard.Cols;
 
-            return (i_gameboard.m_Board[io_Row, io_Col].Expose);
+            return (i_Gameboard.m_Board[io_Row, io_Col].Expose);
         }
     }
 }
-

@@ -36,11 +36,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Ex02.ConsoleUtils">
-      <HintPath>..\..\..\..\..\Documents\תואר מדעי המחשב\Ex02.ConsoleUtils.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AI.cs" />
     <Compile Include="Borad.cs" />
     <Compile Include="ConsoleUI.cs" />
@@ -48,6 +43,11 @@
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Tile.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Ex02.ConsoleUtils">
+      <HintPath>..\..\..\..\..\..\Documents\.Net files\Ex02.ConsoleUtils.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
