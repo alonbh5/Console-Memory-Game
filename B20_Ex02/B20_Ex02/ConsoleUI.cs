@@ -9,10 +9,10 @@ namespace B20_Ex02
     class ConsoleUI
     {
         
-        Game m_Game;
-        object[] m_CharsToPrint = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R' };
+        private Game m_Game;
+        private object[] m_CharsToPrint = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R' };
 
-        public ConsoleUI()
+         ConsoleUI()
         {
             string player1Name, player2Name;
             bool pvc = false;
@@ -70,7 +70,7 @@ namespace B20_Ex02
             } while ((io_Row * io_Col) % 2 != 0);
         }
 
-        public void PlayGame()
+        private void playGame()
         {
             bool turnPlayer1 = true;
             string prompt = string.Empty;
@@ -118,6 +118,7 @@ namespace B20_Ex02
                 m_Game.Player2Name(),
                 m_Game.Player2Score());
         }
+
         private void getInput(ref int io_Row, ref int io_Col,bool io_TurnPlayer1)
         {
             if (!io_TurnPlayer1 && m_Game.IsAIPlay())
@@ -139,16 +140,17 @@ namespace B20_Ex02
             while (!isValid)
             {
                 turn = Console.ReadLine();
-                isValid = ValidInput(turn, ref io_Col, ref io_Row);                         
+                isValid = validInput(turn, ref io_Col, ref io_Row);                         
             }
         }
-        
-        public void printGameBoard()
+
+        private void printGameBoard()
         {            
             Ex02.ConsoleUtils.Screen.Clear();
             Console.WriteLine(m_Game.ToStringBuilder(m_CharsToPrint));
         }
-        private bool ValidInput(string i_userInput, ref int io_Col, ref int io_Row)
+
+        private bool validInput(string i_userInput, ref int io_Col, ref int io_Row)
         {
             bool valid = true;
             char maxLetter = (char)(m_Game.BoardCols() + 'A'-1);
@@ -193,7 +195,7 @@ namespace B20_Ex02
             return valid;        
         }
 
-        public static void MainMenu ()
+        public static void RunMainMenu ()
         {
             bool play = true;
             char input = ' ';
@@ -201,7 +203,7 @@ namespace B20_Ex02
             {
                 Ex02.ConsoleUtils.Screen.Clear();
                 ConsoleUI Mygame = new ConsoleUI();
-                Mygame.PlayGame();
+                Mygame.playGame();
 
 
                 Console.WriteLine("Do you wish to play again? \nType 'Y' for Yes \nType 'N' for No");

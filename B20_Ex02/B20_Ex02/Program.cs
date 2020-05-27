@@ -11,7 +11,7 @@ namespace B20_Ex02
     {
         static void Main()
         {
-            ConsoleUI.MainMenu();
+            ConsoleUI.RunMainMenu();
         }
         //CHECK ACCSESS MODIFIER (ai,game
         //CHECK RESHARPER        
