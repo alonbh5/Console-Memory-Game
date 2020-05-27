@@ -140,7 +140,7 @@ namespace B20_Ex02
                     { // case the pair that the AI remembers was already found by other player
                         m_PairsInMem--;
                         m_AIMem[i].m_PairFound = false;
-                        m_IndexToAdd = i;
+                        m_IndexToAdd = i; //WILL OVERWRITE IT NEXT TIME
                     }
                 }
             }

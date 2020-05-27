@@ -10,7 +10,7 @@ namespace B20_Ex02
     {
         
         Game m_Game;
-        object[] m_CharsToPrint = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q' };
+        object[] m_CharsToPrint = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R' };
 
         public ConsoleUI()
         {
@@ -73,75 +73,57 @@ namespace B20_Ex02
         public void PlayGame()
         {
             bool turnPlayer1 = true;
-            Player CurrentPlayer=m_Game.Player1;
-            bool pvc = false;
             string prompt = string.Empty;
             int row1 = 0, col1 = 0, row2 = 0, col2 = 0;
 
-            printGameBoard();
-
-            while (!m_Game.m_GameBoard.IsGameOver())
+            while (!m_Game.IsGameOver())
             {
-                if (turnPlayer1)
-                {
-                    CurrentPlayer = m_Game.Player1;                    
-                    pvc = false;
-                }
-                else
-                {
-                    CurrentPlayer = m_Game.Player2;                    
-                    if (m_Game.Player2.Pc)
-                    {
-                        pvc = true;
-                    }
-                }
-                Console.WriteLine("{0}'s turn:\n", CurrentPlayer.Name);
-                getInput(pvc,ref row1, ref col1);
-                m_Game.Revele(row1, col1);
                 printGameBoard();
-                if (pvc && !turnPlayer1)
-                {
-                    //this is turn of player 2 and player 2= AI ->need to update memeory of Ai
-                    m_Game.Player2.m_pvc.updateMemory(row1, col1, m_Game.m_GameBoard.m_Board[row1, col1]);
-
-                }
-                Console.WriteLine("{0}'s turn:\n", CurrentPlayer.Name);
-                getInput(pvc,ref row2, ref col2);
-                m_Game.Revele(row2, col2);                
-                printGameBoard();
-
-                if (!m_Game.checkTurn(row1, col1, row2, col2, CurrentPlayer))
-                {
-                    turnPlayer1 = !turnPlayer1;
-                    if (m_Game.Player2.Pc)
-                    {
-                        if (!pvc)
-                        {
-                            //case not won and not AI turn
-                            m_Game.Player2.m_pvc.updateMemory(row1, col1, m_Game.m_GameBoard.m_Board[row1, col1]);
-                        }
-                        m_Game.Player2.m_pvc.updateMemory(row2, col2, m_Game.m_GameBoard.m_Board[row2, col2]);
-                    }
-                }
-
-                printGameBoard();
+                reveleTile(ref row1, ref col1, turnPlayer1);
+                reveleTile(ref row2, ref col2, turnPlayer1);
+                m_Game.CheckTurn(row1, col1, row2, col2, ref turnPlayer1);
             }
-            if (m_Game.getWinner(out Player winner))
+            printScore();
+        }
+
+        private void reveleTile(ref int io_Row, ref int io_Col, bool io_TurnPlayer1)
+        {
+            string playerName = m_Game.Player1Name();
+
+            if (!io_TurnPlayer1)
+            {
+                playerName = m_Game.Player2Name();
+            }
+
+            Console.WriteLine("{0}'s turn:\n", playerName);
+      
+            getInput(ref io_Row, ref io_Col, io_TurnPlayer1);
+            m_Game.Revele(io_Row, io_Col, io_TurnPlayer1);
+            printGameBoard();
+        }
+
+        private void printScore()
+        {
+            if (m_Game.GetWinner(out string winner))
             { //case of tie
-                Console.WriteLine("It's a TIE!\nWith {0) point each.", winner.Pairs);
+                Console.WriteLine("It's a TIE!");
             }
             else
             {
-                Console.WriteLine("{0}'s WON!\nWith {1} pairs reveled.", winner.Name, winner.Pairs);
+                Console.WriteLine("{0} WON!", winner);
             }
+            Console.WriteLine("{0} with {1} pairs reveled.\n{2} with {3} pairs reveled.",
+                m_Game.Player1Name(),
+                m_Game.Player1Score(),
+                m_Game.Player2Name(),
+                m_Game.Player2Score());
         }
-
-        private void getInput(bool pvc, ref int io_Row, ref int io_Col)
+        private void getInput(ref int io_Row, ref int io_Col,bool io_TurnPlayer1)
         {
-            if (pvc)
+            if (!io_TurnPlayer1 && m_Game.IsAIPlay())
             {
                 Thread.Sleep(1000);
-                getInputFromAI(ref io_Row, ref io_Col);
+                m_Game.GetInputFromAI(ref io_Row, ref io_Col);
             }
             else
             {
@@ -153,27 +135,24 @@ namespace B20_Ex02
         {
             string turn = string.Empty;
             bool isValid = false;
-            Console.WriteLine("Enter play");
+            Console.WriteLine("Enter play (Enter 'Q' to Quit)");
             while (!isValid)
             {
                 turn = Console.ReadLine();
                 isValid = ValidInput(turn, ref io_Col, ref io_Row);                         
             }
         }
-        private void getInputFromAI(ref int io_Row, ref int io_Col)
-        {
-            m_Game.Player2.m_pvc.PlayTurn(ref io_Row, ref io_Col, m_Game.m_GameBoard);
-        }
-        public void printGameBoard ()
+        
+        public void printGameBoard()
         {            
             Ex02.ConsoleUtils.Screen.Clear();
-            Console.WriteLine(m_Game.m_GameBoard.ToStringBuilder(m_CharsToPrint));
+            Console.WriteLine(m_Game.ToStringBuilder(m_CharsToPrint));
         }
         private bool ValidInput(string i_userInput, ref int io_Col, ref int io_Row)
         {
             bool valid = true;
-            char maxLetter = (char)(m_Game.m_GameBoard.Cols + 'A'-1);
-            char maxNumber = (char)(m_Game.m_GameBoard.Rows + '1'-1);
+            char maxLetter = (char)(m_Game.BoardCols() + 'A'-1);
+            char maxNumber = (char)(m_Game.BoardRows() + '1'-1);
 
             if (i_userInput == "Q")
             {
@@ -204,14 +183,39 @@ namespace B20_Ex02
             {
                 int.TryParse((i_userInput[0] - 'A').ToString(), out io_Col);
                 int.TryParse((i_userInput[1] - '1').ToString(), out io_Row);
-                valid = m_Game.checkTile(io_Col, io_Row);
+                valid = m_Game.CheckTile(io_Col, io_Row);
                 if (!valid) 
                 {
                     Console.WriteLine("Input tile is already reveld! Try again");
                 }
             }
 
-            return valid;
+            return valid;        
+        }
+
+        public static void MainMenu ()
+        {
+            bool play = true;
+            char input = ' ';
+            while (play)
+            {
+                Ex02.ConsoleUtils.Screen.Clear();
+                ConsoleUI Mygame = new ConsoleUI();
+                Mygame.PlayGame();
+
+
+                Console.WriteLine("Do you wish to play again? \nType 'Y' for Yes \nType 'N' for No");
+                while (!char.TryParse(Console.ReadLine(), out input) && input != 'Y' && input != 'N') 
+                {
+                    Console.WriteLine("Wrong input!! \nType 'Y' for Yes \nType 'N' for No");
+                }
+                
+                if (input == 'N')
+                {
+                    play = false;
+                }
+            }
+
         }
     }
 }

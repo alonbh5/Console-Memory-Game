@@ -4,91 +4,156 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
+///WHILE (game not over)
+///{ flip player 
+/// 1.revele (row col)
+/// 2.revele  (row col)
+/// 3.check turn
+/// }
 
 namespace B20_Ex02
 {
     class Game
     {
-        Player m_Player1;
-        Player m_Player2;
-        internal Board m_GameBoard;
+        private Player m_Player1;
+        private Player m_Player2;
+        private Board m_GameBoard;
 
-        internal Game(string name1, string name2, bool pvc, int row, int col)
+        internal Game(string i_Name1, string i_Name2, bool i_Pvc, int i_Row, int i_Col)
         {
-            if ((row * col) % 2 != 0)
-            {
-                row++;
-            }
-
-            m_Player1 = new Player(name1, false);
-            m_Player2 = new Player(name2, pvc);
-            m_GameBoard = new Board(row, col);
+            m_Player1 = new Player(i_Name1, false);
+            m_Player2 = new Player(i_Name2, i_Pvc);
+            m_GameBoard = new Board(i_Row, i_Col);
         }
 
-        public Player Player1
+        internal string Player1Name()
         {
-            get { return m_Player1; }
+            return m_Player1.Name;
         }
 
-        public Player Player2
+        internal string Player2Name()
         {
-            get { return m_Player2; }
+            return m_Player2.Name;
         }
 
-        internal void Revele(int i_Row, int i_Col)
+        internal int Player1Score()
+        {
+            return m_Player1.Pairs;
+        }
+
+        internal int Player2Score()
+        {
+            return m_Player2.Pairs;
+        }
+
+        internal int BoardCols()
+        {
+            return m_GameBoard.Cols;
+        }
+
+        internal int BoardRows()
+        {
+            return m_GameBoard.Rows;
+        }
+
+        internal void Revele(int i_Row, int i_Col,bool i_TurnPlayer1)
         {
             m_GameBoard.Expose(i_Row, i_Col);
+
+            if (m_Player2.Pc && !i_TurnPlayer1)
+            { // This is turn of player 2 and it is AI -> need to update memeory of AI.
+                m_Player2.m_pvc.updateMemory(i_Row, i_Col,m_GameBoard.m_Board[i_Row,i_Col]);
+            }
         }
-        internal void Unrevele(int i_Row1, int i_Col1, int i_Row2, int i_Col2)
+
+        internal void GetInputFromAI(ref int io_Row, ref int io_Col)
+        {
+            m_Player2.m_pvc.PlayTurn(ref io_Row, ref io_Col, m_GameBoard);
+        }
+
+        private void unrevele(int i_Row1, int i_Col1, int i_Row2, int i_Col2)
         {
             m_GameBoard.Unexpose(i_Row1, i_Col1);
             m_GameBoard.Unexpose(i_Row2, i_Col2);
         }
 
-        internal bool checkTurn(int i_Row1, int i_Col1, int i_Row2, int i_Col2, Player i_player)
+        internal void CheckTurn(int i_Row1, int i_Col1, int i_Row2, int i_Col2, ref bool io_TurnPlayer1)
         {
-            bool res = false;
-            if (m_GameBoard.CheckPair(i_Row1, i_Col1, i_Row2, i_Col2))
+            bool changePlayer = false;
+            Player currentPlayer = m_Player1;
+
+            if (!io_TurnPlayer1)
             {
-                i_player.Pairs++;
-                m_GameBoard.PairFound();
-                res = true;
+                currentPlayer = m_Player2;
+            }
+
+            if (m_GameBoard.CheckPair(i_Row1, i_Col1, i_Row2, i_Col2))
+            {// CASE FOUND PAIR
+                currentPlayer.Pairs++;
+                m_GameBoard.PairFound();                
             }
             else
             {
                 Thread.Sleep(2000);
-                Unrevele(i_Row1, i_Col1, i_Row2, i_Col2);
+                unrevele(i_Row1, i_Col1, i_Row2, i_Col2);
+                changePlayer = true;
             }
 
-            return res;
+            if (changePlayer)
+            {               
+                if (m_Player2.Pc)
+                {
+                    if (io_TurnPlayer1)
+                    { // case not won and not AI turn
+                        m_Player2.m_pvc.updateMemory(i_Row1, i_Col1, m_GameBoard.m_Board[i_Row1, i_Col1]);
+                    }
+                    m_Player2.m_pvc.updateMemory(i_Row2, i_Col2, m_GameBoard.m_Board[i_Row2, i_Col2]);
+                }
+
+                io_TurnPlayer1 = !io_TurnPlayer1;
+            }
         }
 
-        internal bool getWinner(out Player winner)
+        internal bool GetWinner(out string o_Winner)
         {
             bool isTie = false;
 
             if (m_Player1.Pairs == m_Player2.Pairs)
             {
                 isTie = true;
-                winner = m_Player1;
+                o_Winner = m_Player1.Name;
             }
 
             if (m_Player1.Pairs > m_Player2.Pairs)
             {
-                winner = m_Player1;
+                o_Winner = m_Player1.Name;
             }
             else
             {
-                winner = m_Player2;
+                o_Winner = m_Player2.Name;
             }
 
             return isTie;
-
         }
 
-        internal bool checkTile(int io_Col, int io_Row)
+        internal bool CheckTile(int io_Col, int io_Row)
         {
             return (!m_GameBoard.m_Board[io_Row, io_Col].Expose);
+        }
+
+        internal bool IsGameOver()
+        {
+            return m_GameBoard.IsGameOver();
+        }
+
+        internal bool IsAIPlay()
+        {
+            return m_Player2.Pc;
+        }
+
+        internal StringBuilder ToStringBuilder(object[] io_CharsToPrint)
+        {
+            return m_GameBoard.ToStringBuilder(io_CharsToPrint);
         }
     }
 }
