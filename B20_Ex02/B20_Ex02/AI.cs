@@ -97,7 +97,7 @@ namespace B20_Ex02
             {
                 for (int i = 0; i < m_AIMem.Length; i++) //find if the AI has seen this tile-pair before
                 {
-                    if (m_AIMem[i].m_Value == i_Tile.m_Value)
+                    if (m_AIMem[i].m_Value == i_Tile.Value)
                     { // found this value before
                         if (m_AIMem[i].m_Row != i_Row && m_AIMem[i].m_Col != i_Col)
                         { // case the other pair
@@ -118,7 +118,7 @@ namespace B20_Ex02
                     {
                         m_IndexToAdd++;
                     }
-                    m_AIMem[m_IndexToAdd++ % k_MaxMem] = new AIMemCell(i_Row, i_Col, i_Tile.m_Value);
+                    m_AIMem[m_IndexToAdd++ % k_MaxMem] = new AIMemCell(i_Row, i_Col, i_Tile.Value);
                 }
 
             }
