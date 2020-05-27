@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -41,7 +41,7 @@ namespace B20_Ex02
     class AI
     {
         const int MAX_MEM = 6;
-        const int NOT_FOUND = -1;
+        const int NOT_FOUND = -1; //bla
 
         Turns[] m_turnMem = new Turns[MAX_MEM];
         int m_turns = 0;
