@@ -32,12 +32,12 @@ namespace B20_Ex02
             buildBoard();
         }
 
-        public int Rows
+        internal int Rows
         {
             get { return m_Rows; }
         }
 
-        public int Cols
+        internal int Cols
         {
             get { return m_Cols; }
         }
@@ -74,7 +74,7 @@ namespace B20_Ex02
             return (m_Board[io_Row, io_Col].Value.Equals(0));
         }
 
-        public StringBuilder ToStringBuilder(object[] i_PairArr)   // For UI
+        internal StringBuilder ToStringBuilder(object[] i_PairArr)   
         {
             StringBuilder boardToPrint = new StringBuilder();
             int rowToPrints = m_Rows + 1;
@@ -135,7 +135,7 @@ namespace B20_Ex02
             return (boardToPrint);
         }
 
-        public bool IsGameOver()
+        internal bool IsGameOver()
         {
             return (m_ExposesPairs == m_TotalPairs);
         }

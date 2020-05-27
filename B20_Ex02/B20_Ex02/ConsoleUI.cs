@@ -8,7 +8,9 @@ namespace B20_Ex02
 {
     class ConsoleUI
     {
-        
+        private const int k_FirstRevele = 1;
+        private const int k_SecondRevele = 2;
+
         private Game m_Game;
         private object[] m_CharsToPrint = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R' };
 
@@ -79,14 +81,14 @@ namespace B20_Ex02
             while (!m_Game.IsGameOver())
             {
                 printGameBoard();
-                reveleTile(ref row1, ref col1, turnPlayer1);
-                reveleTile(ref row2, ref col2, turnPlayer1);
+                reveleTile(ref row1, ref col1, turnPlayer1, k_FirstRevele);
+                reveleTile(ref row2, ref col2, turnPlayer1, k_SecondRevele);
                 m_Game.CheckTurn(row1, col1, row2, col2, ref turnPlayer1);
             }
             printScore();
         }
 
-        private void reveleTile(ref int io_Row, ref int io_Col, bool io_TurnPlayer1)
+        private void reveleTile(ref int io_Row, ref int io_Col, bool io_TurnPlayer1,int i_ReveledNumber)
         {
             string playerName = m_Game.Player1Name();
 
@@ -98,7 +100,15 @@ namespace B20_Ex02
             Console.WriteLine("{0}'s turn:\n", playerName);
       
             getInput(ref io_Row, ref io_Col, io_TurnPlayer1);
-            m_Game.Revele(io_Row, io_Col, io_TurnPlayer1);
+            if (i_ReveledNumber == k_FirstRevele)
+            {
+                m_Game.FirstRevele(io_Row, io_Col, io_TurnPlayer1);
+            }
+            else
+            {
+                m_Game.SecondRevele(io_Row, io_Col, io_TurnPlayer1);
+            }
+            
             printGameBoard();
         }
 

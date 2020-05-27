@@ -4,12 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-///WHILE (game not over)
-///{ flip player 
-/// 1.revele (row col)
-/// 2.revele  (row col)
-/// 3.check turn
+//To Play Game:
+///While (IsGameOver)
+///{  
+///     1.First Revele (row col)
+///     2.Second Revele(row col)
+///     3.Check Turn
 /// }
+/// To get winner use getWinner 
+/// to get score use  getScore
+/// to Get StringBuilde of the Gameboard use ToStringBuilder (Array of Object that use ToString (object[i]=pair # i))
 
 namespace B20_Ex02
 {
@@ -56,14 +60,19 @@ namespace B20_Ex02
             return m_GameBoard.Rows;
         }
 
-        internal void Revele(int i_Row, int i_Col,bool i_TurnPlayer1)
+        internal void FirstRevele(int i_Row, int i_Col,bool i_TurnPlayer1)
         {
             m_GameBoard.Expose(i_Row, i_Col);
 
-            if (m_Player2.Pc && !i_TurnPlayer1)
+            if (m_Player2.Pc && !i_TurnPlayer1) 
             { // This is turn of player 2 and it is AI -> need to update memeory of AI.
                 m_Player2.m_pvc.updateMemory(i_Row, i_Col,m_GameBoard.m_Board[i_Row,i_Col]);
             }
+        }
+
+        internal void SecondRevele(int i_Row, int i_Col, bool i_TurnPlayer1)
+        {
+            m_GameBoard.Expose(i_Row, i_Col);
         }
 
         internal void GetInputFromAI(ref int io_Row, ref int io_Col)

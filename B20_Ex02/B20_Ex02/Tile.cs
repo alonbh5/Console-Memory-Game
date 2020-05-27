@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +17,7 @@ namespace B20_Ex02
             m_Expose = false;
         }
 
-        public int Value
+        internal int Value
         {
             get { return m_Value; }
             set { m_Value = value; }
