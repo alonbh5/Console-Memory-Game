@@ -1,23 +1,21 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
+using Ex02.ConsoleUtils;
 
 namespace B20_Ex02
 {
     class ConsoleUI
     {
-        private const int k_FirstRevele = 1;
-        private const int k_SecondRevele = 2;
+        const int k_FirstRevele = 1;
+        const int k_SecondRevele = 2;
 
-        private Game m_Game;
-        private object[] m_CharsToPrint = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R' };
+        Game m_Game;
+        object[] m_CharsToPrint = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R' };
 
-         ConsoleUI()
+        ConsoleUI()
         {
             string player1Name, player2Name;
-            bool pvc = false;
+            bool isPvc = false;
             int row = 0, col = 0, choice = 0;
             
             Console.WriteLine("Welcome to Memory Game! \nPlease Enter Your Name:");
@@ -36,16 +34,15 @@ namespace B20_Ex02
             }
             else
             {
-                player2Name = "GUY RONEN";
-                pvc = true;
+                player2Name = "Artificial Intelligence";
+                isPvc = true;
             }
 
             getBoardSize(ref row, ref col);
-
-            m_Game = new Game(player1Name, player2Name, pvc, row, col);
+            m_Game = new Game(player1Name, player2Name, isPvc, row, col);
         }
 
-        private void getBoardSize(ref int io_Col, ref int io_Row)
+        private void getBoardSize(ref int io_Row, ref int io_Col)
         {
             do
             {
@@ -74,16 +71,16 @@ namespace B20_Ex02
 
         private void playGame()
         {
-            bool turnPlayer1 = true;
+            bool isTurnPlayer1 = true;
             string prompt = string.Empty;
             int row1 = 0, col1 = 0, row2 = 0, col2 = 0;
 
             while (!m_Game.IsGameOver())
             {
                 printGameBoard();
-                reveleTile(ref row1, ref col1, turnPlayer1, k_FirstRevele);
-                reveleTile(ref row2, ref col2, turnPlayer1, k_SecondRevele);
-                m_Game.CheckTurn(row1, col1, row2, col2, ref turnPlayer1);
+                reveleTile(ref row1, ref col1, isTurnPlayer1, k_FirstRevele);
+                reveleTile(ref row2, ref col2, isTurnPlayer1, k_SecondRevele);
+                m_Game.CheckTurn(row1, col1, row2, col2, ref isTurnPlayer1);
             }
             printScore();
         }
@@ -97,9 +94,9 @@ namespace B20_Ex02
                 playerName = m_Game.Player2Name();
             }
 
-            Console.WriteLine("{0}'s turn:\n", playerName);
-      
+            Console.WriteLine("{0}'s turn:\n", playerName);      
             getInput(ref io_Row, ref io_Col, io_TurnPlayer1);
+
             if (i_ReveledNumber == k_FirstRevele)
             {
                 m_Game.FirstRevele(io_Row, io_Col, io_TurnPlayer1);
@@ -122,6 +119,7 @@ namespace B20_Ex02
             {
                 Console.WriteLine("{0} WON!", winner);
             }
+
             Console.WriteLine("{0} with {1} pairs reveled.\n{2} with {3} pairs reveled.",
                 m_Game.Player1Name(),
                 m_Game.Player1Score(),
@@ -129,7 +127,7 @@ namespace B20_Ex02
                 m_Game.Player2Score());
         }
 
-        private void getInput(ref int io_Row, ref int io_Col,bool io_TurnPlayer1)
+        private void getInput(ref int io_Row, ref int io_Col, bool io_TurnPlayer1)
         {
             if (!io_TurnPlayer1 && m_Game.IsAIPlay())
             {
@@ -160,52 +158,54 @@ namespace B20_Ex02
             Console.WriteLine(m_Game.ToStringBuilder(m_CharsToPrint));
         }
 
-        private bool validInput(string i_userInput, ref int io_Col, ref int io_Row)
+        private bool validInput(string i_UserInput, ref int io_Col, ref int io_Row)
         {
-            bool valid = true;
+            bool isValid = true;
             char maxLetter = (char)(m_Game.BoardCols() + 'A'-1);
             char maxNumber = (char)(m_Game.BoardRows() + '1'-1);
 
-            if (i_userInput == "Q")
+            if (i_UserInput == "Q")
             {
                 Console.WriteLine("Bye Bye!\nexit game.");
                 System.Environment.Exit(1);
             }
 
-            if (i_userInput.Length > 2 || i_userInput.Length == 0)
+            if (i_UserInput.Length != 2 )
             {
                 Console.WriteLine("Input must be 'col-row' (for example: 'A1')");
-                valid = false;
+                isValid = false;
             }
             else
             {
-                if (i_userInput[0] > maxLetter || i_userInput[0] < 'A')
+                if (i_UserInput[0] > maxLetter || i_UserInput[0] < 'A')
                 {
                     Console.WriteLine("Input col must be in board size ('A'-'{0}')", maxLetter);
-                    valid = false;
+                    isValid = false;
                 }
-                if (i_userInput[1] > maxNumber || i_userInput[1] < '1')
+
+                if (i_UserInput[1] > maxNumber || i_UserInput[1] < '1')
                 {
                     Console.WriteLine("Input row must be in board size ('1'-'{0}')", maxNumber);
-                    valid = false;
+                    isValid = false;
                 }
             }
 
-            if(valid)
+            if(isValid)
             {
-                int.TryParse((i_userInput[0] - 'A').ToString(), out io_Col);
-                int.TryParse((i_userInput[1] - '1').ToString(), out io_Row);
-                valid = m_Game.CheckTile(io_Col, io_Row);
-                if (!valid) 
+                int.TryParse((i_UserInput[0] - 'A').ToString(), out io_Col);
+                int.TryParse((i_UserInput[1] - '1').ToString(), out io_Row);
+                isValid = m_Game.CheckTile(io_Col, io_Row);
+
+                if (!isValid) 
                 {
                     Console.WriteLine("Input tile is already reveld! Try again");
                 }
             }
 
-            return valid;        
+            return isValid;        
         }
 
-        public static void RunMainMenu ()
+        public static void RunMainMenu()
         {
             bool play = true;
             char input = ' ';
@@ -224,6 +224,7 @@ namespace B20_Ex02
                 
                 if (input == 'N')
                 {
+                    Console.WriteLine("Bye Bye! \nexiting game");
                     play = false;
                 }
             }

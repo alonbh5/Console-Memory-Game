@@ -36,6 +36,7 @@ namespace B20_Ex02
 
         AIMemCell[] m_AIMem = new AIMemCell[k_MaxMem];
         int m_Turns = 0;
+        int m_Reveled = 0;
         bool m_DoSmartChoice = false;
         int m_PairsInMem = 0;
         int m_IndexToAdd = 0;
@@ -43,7 +44,13 @@ namespace B20_Ex02
         public void PlayTurn(ref int io_Row, ref int io_Col, Board i_Gameboard)
         {
             bool isRandom = true;
-            m_Turns++;
+            m_Reveled++;
+
+            if (m_Reveled % 2 != 0)
+            {
+                m_Turns++;
+
+            }
 
             if (m_Turns % 3 == 0)
             { // Play smart every 3 turns.
@@ -69,21 +76,25 @@ namespace B20_Ex02
         private void smartChoice(ref int io_Row, ref int io_Col, int i_Index)
         {
 
-            if (!m_AIMem[i_Index].m_SentFirstLoc)
+            if (!m_AIMem[i_Index].m_SentFirstLoc) 
             {
-                //send the first coordiante
+                //send the first coordiante expooer
                 io_Row = m_AIMem[i_Index].m_Row;
                 io_Col = m_AIMem[i_Index].m_Col;
-                m_AIMem[i_Index].m_SentFirstLoc = true;
-                m_Turns--; //for seconde reveled by smart choice
+                m_AIMem[i_Index].m_SentFirstLoc = true;                
             }
             else
             {
                 io_Row = m_AIMem[i_Index].m_PairRow;
-                io_Col = m_AIMem[i_Index].m_PairCol;
+                io_Col = m_AIMem[i_Index].m_PairCol;              
+            }
+
+            if (m_Reveled % 2 == 0) 
+            {
                 m_PairsInMem--;
                 m_AIMem[i_Index].m_PairFound = false;
-                m_IndexToAdd = i_Index;
+                m_AIMem[i_Index].m_SentFirstLoc = false;
+                //m_IndexToAdd = i_Index;
                 m_DoSmartChoice = false;
             }
 
@@ -99,12 +110,21 @@ namespace B20_Ex02
                 {
                     if (m_AIMem[i].m_Value == i_Tile.Value)
                     { // found this value before
-                        if (m_AIMem[i].m_Row != i_Row && m_AIMem[i].m_Col != i_Col)
+                        if (!(m_AIMem[i].m_Row == i_Row && m_AIMem[i].m_Col == i_Col))
                         { // case the other pair
                             m_AIMem[i].m_PairFound = true;
                             m_AIMem[i].m_PairCol = i_Col;
                             m_AIMem[i].m_PairRow = i_Row;
                             m_PairsInMem++;
+
+                            if (m_Reveled % 2 != 0)
+                            { // for case found pair in smartcohice (that goes random)                                
+                                m_AIMem[i].m_PairCol = m_AIMem[i].m_Col;
+                                m_AIMem[i].m_PairRow = m_AIMem[i].m_Row;
+                                m_AIMem[i].m_Col = i_Col;
+                                m_AIMem[i].m_Row = i_Row;
+                                m_AIMem[i].m_SentFirstLoc = true;
+                            }
                         }
 
                         isFound = true;
@@ -125,27 +145,39 @@ namespace B20_Ex02
         }
         private int memoryInRealTime(Board i_Gameboard)
         { // case AI remember a pair for sure
-            int res = k_NotFound;
+            int index = k_NotFound;
 
             for (int i = 0; i < m_AIMem.Length; i++)
             {
-                if (m_AIMem[i].m_PairFound)
-                {
-                    if (!(i_Gameboard.m_Board[m_AIMem[i].m_PairRow, m_AIMem[i].m_PairCol].Expose))
+                if (m_Reveled % 2 == 0)
+                { // on second reveled, only look for specific pair
+                    if (m_AIMem[i].m_SentFirstLoc)
                     {
-                        res = i;
+                        index = i;
                         break;
                     }
-                    else
-                    { // case the pair that the AI remembers was already found by other player
-                        m_PairsInMem--;
-                        m_AIMem[i].m_PairFound = false;
-                        m_IndexToAdd = i; //WILL OVERWRITE IT NEXT TIME
+                }
+                else
+                {
+                    if (m_AIMem[i].m_PairFound)
+                    {
+                        if (!(i_Gameboard.m_Board[m_AIMem[i].m_PairRow, m_AIMem[i].m_PairCol].Expose))
+                        {
+                            index = i;
+                            break;
+                        }
+                        else
+                        { // case the pair that the AI remembers was already found by other player
+                            m_PairsInMem--;
+                            m_AIMem[i].m_PairFound = false;
+                            m_AIMem[i].m_SentFirstLoc = false;
+                            //m_IndexToAdd = i; //WILL OVERWRITE IT NEXT TIME
+                        }
                     }
                 }
             }
 
-            return res;
+            return index;
         }
 
         private void randomChoice(ref int io_Row, ref int io_Col, Board i_Gameboard)

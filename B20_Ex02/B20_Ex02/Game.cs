@@ -19,9 +19,9 @@ namespace B20_Ex02
 {
     class Game
     {
-        private Player m_Player1;
-        private Player m_Player2;
-        private Board m_GameBoard;
+        Player m_Player1;
+        Player m_Player2;
+        Board m_GameBoard;
 
         internal Game(string i_Name1, string i_Name2, bool i_Pvc, int i_Row, int i_Col)
         {
@@ -66,7 +66,7 @@ namespace B20_Ex02
 
             if (m_Player2.Pc && !i_TurnPlayer1) 
             { // This is turn of player 2 and it is AI -> need to update memeory of AI.
-                m_Player2.m_pvc.updateMemory(i_Row, i_Col,m_GameBoard.m_Board[i_Row,i_Col]);
+                m_Player2.m_PlayerVsComputer.updateMemory(i_Row, i_Col,m_GameBoard.m_Board[i_Row,i_Col]);
             }
         }
 
@@ -77,7 +77,8 @@ namespace B20_Ex02
 
         internal void GetInputFromAI(ref int io_Row, ref int io_Col)
         {
-            m_Player2.m_pvc.PlayTurn(ref io_Row, ref io_Col, m_GameBoard);
+            
+            m_Player2.m_PlayerVsComputer.PlayTurn(ref io_Row, ref io_Col, m_GameBoard);
         }
 
         private void unrevele(int i_Row1, int i_Col1, int i_Row2, int i_Col2)
@@ -114,9 +115,9 @@ namespace B20_Ex02
                 {
                     if (io_TurnPlayer1)
                     { // case not won and not AI turn
-                        m_Player2.m_pvc.updateMemory(i_Row1, i_Col1, m_GameBoard.m_Board[i_Row1, i_Col1]);
+                        m_Player2.m_PlayerVsComputer.updateMemory(i_Row1, i_Col1, m_GameBoard.m_Board[i_Row1, i_Col1]);
                     }
-                    m_Player2.m_pvc.updateMemory(i_Row2, i_Col2, m_GameBoard.m_Board[i_Row2, i_Col2]);
+                    m_Player2.m_PlayerVsComputer.updateMemory(i_Row2, i_Col2, m_GameBoard.m_Board[i_Row2, i_Col2]);
                 }
 
                 io_TurnPlayer1 = !io_TurnPlayer1;

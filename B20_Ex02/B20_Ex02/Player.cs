@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,31 +11,30 @@ namespace B20_Ex02
         string m_Name;
         bool m_Pc;
         int m_Pairs;
-        internal AI m_pvc;
-        
+        internal AI m_PlayerVsComputer;        
 
-        internal Player(string name, bool pc)
+        internal Player(string i_Name, bool i_Pc)
         {
-            m_Name = name;
-            m_Pc = pc;
-            if (pc)
+            m_Name = i_Name;
+            m_Pc = i_Pc;
+            if (m_Pc)
             {
-                m_pvc = new AI();
+                m_PlayerVsComputer = new AI();
             }
         }
 
-        public string Name
+        internal string Name
         {
             get { return m_Name; }
         }
 
-        public int Pairs
+        internal int Pairs
         {
             get { return m_Pairs; }
             set { m_Pairs++; }
         }
 
-        public bool Pc
+        internal bool Pc
         {
             get { return m_Pc; }
         }
