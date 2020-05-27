@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,7 +48,7 @@ namespace B20_Ex02
         internal bool checkTurn(int i_Row1, int i_Col1, int i_Row2, int i_Col2, Player i_player)
         {
             bool res = false;
-            if (m_GameBoard.checkPair(i_Row1, i_Col1, i_Row2, i_Col2))
+            if (m_GameBoard.CheckPair(i_Row1, i_Col1, i_Row2, i_Col2))
             {
                 i_player.Pairs++;
                 m_GameBoard.PairFound();

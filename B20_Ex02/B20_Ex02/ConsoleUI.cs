@@ -1,20 +1,23 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace B20_Ex02
 {
     class ConsoleUI
     {
+        
         Game m_Game;
+        object[] m_CharsToPrint = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q' };
 
         public ConsoleUI()
         {
             string player1Name, player2Name;
             bool pvc = false;
             int row = 0, col = 0, choice = 0;
+            
             Console.WriteLine("Welcome to Memory Game! \nPlease Enter Your Name:");
             player1Name = Console.ReadLine();
 
@@ -77,7 +80,7 @@ namespace B20_Ex02
 
             printGameBoard();
 
-            while (!m_Game.m_GameBoard.isGameOver())
+            while (!m_Game.m_GameBoard.IsGameOver())
             {
                 if (turnPlayer1)
                 {
@@ -137,6 +140,7 @@ namespace B20_Ex02
         {
             if (pvc)
             {
+                Thread.Sleep(1000);
                 getInputFromAI(ref io_Row, ref io_Col);
             }
             else
@@ -161,9 +165,9 @@ namespace B20_Ex02
             m_Game.Player2.m_pvc.PlayTurn(ref io_Row, ref io_Col, m_Game.m_GameBoard);
         }
         public void printGameBoard ()
-        {
+        {            
             Ex02.ConsoleUtils.Screen.Clear();
-            Console.WriteLine(m_Game.m_GameBoard.ToStringBuilder());
+            Console.WriteLine(m_Game.m_GameBoard.ToStringBuilder(m_CharsToPrint));
         }
         private bool ValidInput(string i_userInput, ref int io_Col, ref int io_Row)
         {
