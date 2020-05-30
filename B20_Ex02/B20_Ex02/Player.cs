@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace B20_Ex02
 {
-    class Player
+    internal class Player           //// add internal and private to members
     {
-        string m_Name;
-        bool m_Pc;
-        int m_Pairs;
+        private string m_Name;
+        private bool m_Pc;
+        private int m_Pairs;
         internal AI m_PlayerVsComputer;        
 
         internal Player(string i_Name, bool i_Pc)

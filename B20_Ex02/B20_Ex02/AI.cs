@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace B20_Ex02
 {
-    struct AIMemCell
+    internal struct AIMemCell       //// add internal
     {
         internal int m_Row;
         internal int m_Col;
@@ -29,17 +29,17 @@ namespace B20_Ex02
         }
     }
 
-    class AI
+    internal class AI       //// add internal and private to members
     {
         private const int k_MaxMem = 6;
         private const int k_NotFound = -1;
 
-        AIMemCell[] m_AIMem = new AIMemCell[k_MaxMem];
-        int m_Turns = 0;
-        int m_Reveled = 0;
-        bool m_DoSmartChoice = false;
-        int m_PairsInMem = 0;
-        int m_IndexToAdd = 0;
+        private AIMemCell[] m_AIMem = new AIMemCell[k_MaxMem];
+        private int m_Turns = 0;
+        private int m_Reveled = 0;
+        private bool m_DoSmartChoice = false;
+        private int m_PairsInMem = 0;
+        private int m_IndexToAdd = 0;
 
         public void PlayTurn(ref int io_Row, ref int io_Col, Board i_Gameboard)
         {
@@ -49,7 +49,6 @@ namespace B20_Ex02
             if (m_Reveled % 2 != 0)
             {
                 m_Turns++;
-
             }
 
             if (m_Turns % 3 == 0)
@@ -75,10 +74,9 @@ namespace B20_Ex02
 
         private void smartChoice(ref int io_Row, ref int io_Col, int i_Index)
         {
-
             if (!m_AIMem[i_Index].m_SentFirstLoc) 
             {
-                //send the first coordiante expooer
+                //// Send the first coordiante expooer
                 io_Row = m_AIMem[i_Index].m_Row;
                 io_Col = m_AIMem[i_Index].m_Col;
                 m_AIMem[i_Index].m_SentFirstLoc = true;                
@@ -94,31 +92,29 @@ namespace B20_Ex02
                 m_PairsInMem--;
                 m_AIMem[i_Index].m_PairFound = false;
                 m_AIMem[i_Index].m_SentFirstLoc = false;
-                //m_IndexToAdd = i_Index;
                 m_DoSmartChoice = false;
             }
-
         }
 
         internal void updateMemory(int i_Row, int i_Col, Tile i_Tile)
-        { // Update AI Memory of tails that just got reveled on board
+        { //// Update AI Memory of tails that just got reveled on board
             bool isFound = false;
 
-            if (m_PairsInMem != k_MaxMem) //if memeory is not full of pairs 
-            {
-                for (int i = 0; i < m_AIMem.Length; i++) //find if the AI has seen this tile-pair before
-                {
+            if (m_PairsInMem != k_MaxMem) 
+            { // If memeory is not full of pairs 
+                for (int i = 0; i < m_AIMem.Length; i++)
+                { // Find if the AI has seen this tile-pair before
                     if (m_AIMem[i].m_Value == i_Tile.Value)
-                    { // found this value before
+                    { // Found this value before
                         if (!(m_AIMem[i].m_Row == i_Row && m_AIMem[i].m_Col == i_Col))
-                        { // case the other pair
+                        { // Case the other pair
                             m_AIMem[i].m_PairFound = true;
                             m_AIMem[i].m_PairCol = i_Col;
                             m_AIMem[i].m_PairRow = i_Row;
                             m_PairsInMem++;
 
                             if (m_Reveled % 2 != 0)
-                            { // for case found pair in smartcohice (that goes random)                                
+                            { // Case found pair in smartcohice (that goes random)                                
                                 m_AIMem[i].m_PairCol = m_AIMem[i].m_Col;
                                 m_AIMem[i].m_PairRow = m_AIMem[i].m_Row;
                                 m_AIMem[i].m_Col = i_Col;
@@ -132,19 +128,20 @@ namespace B20_Ex02
                     }
                 }
 
-                if (!isFound) //case not seen this tile before - lets remember it
-                {
+                if (!isFound)
+                { // Case not seen this tile before - lets remember it
                     while (m_AIMem[m_IndexToAdd % k_MaxMem].m_PairFound)
                     {
                         m_IndexToAdd++;
                     }
+
                     m_AIMem[m_IndexToAdd++ % k_MaxMem] = new AIMemCell(i_Row, i_Col, i_Tile.Value);
                 }
-
             }
         }
+
         private int memoryInRealTime(Board i_Gameboard)
-        { // case AI remember a pair for sure
+        { // Case AI remember a pair for sure
             int index = k_NotFound;
 
             for (int i = 0; i < m_AIMem.Length; i++)
@@ -161,7 +158,7 @@ namespace B20_Ex02
                 {
                     if (m_AIMem[i].m_PairFound)
                     {
-                        if (!(i_Gameboard.m_Board[m_AIMem[i].m_PairRow, m_AIMem[i].m_PairCol].Expose))
+                        if (!i_Gameboard.m_Board[m_AIMem[i].m_PairRow, m_AIMem[i].m_PairCol].Expose)
                         {
                             index = i;
                             break;
@@ -171,7 +168,6 @@ namespace B20_Ex02
                             m_PairsInMem--;
                             m_AIMem[i].m_PairFound = false;
                             m_AIMem[i].m_SentFirstLoc = false;
-                            //m_IndexToAdd = i; //WILL OVERWRITE IT NEXT TIME
                         }
                     }
                 }
@@ -190,7 +186,6 @@ namespace B20_Ex02
             {
                 loc = rnd.Next(maxRnd);
             } while (checkRandomLocation(loc, ref io_Row, ref io_Col, i_Gameboard));
-
         }
 
         private bool checkRandomLocation(int i_Num, ref int io_Row, ref int io_Col, Board i_Gameboard)
@@ -198,7 +193,7 @@ namespace B20_Ex02
             io_Row = i_Num / i_Gameboard.Cols;
             io_Col = i_Num % i_Gameboard.Cols;
 
-            return (i_Gameboard.m_Board[io_Row, io_Col].Expose);
+            return i_Gameboard.m_Board[io_Row, io_Col].Expose;
         }
     }
 }

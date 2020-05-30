@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace B20_Ex02
 {
-    struct Tile
+    internal struct Tile            //// add internal
     {
         private int m_Value;
         private bool m_Expose;
@@ -28,6 +28,5 @@ namespace B20_Ex02
             get { return m_Expose; }
             set { m_Expose = value; }
         }
-
     }
 }

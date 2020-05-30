@@ -4,15 +4,15 @@ using Ex02.ConsoleUtils;
 
 namespace B20_Ex02
 {
-    class ConsoleUI
+    internal class ConsoleUI            //// add internal
     {
-        const int k_FirstRevele = 1;
-        const int k_SecondRevele = 2;
+        private const int k_FirstRevele = 1;
+        private const int k_SecondRevele = 2;
 
-        Game m_Game;
-        object[] m_CharsToPrint = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R' };
+        private Game m_Game;
+        private object[] m_CharsToPrint = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R' };
 
-        ConsoleUI()
+        internal ConsoleUI()        //// add internal 
         {
             string player1Name, player2Name;
             bool isPvc = false;
@@ -65,7 +65,6 @@ namespace B20_Ex02
                 {
                     Console.WriteLine("The number of board tiles must be even!");
                 }
-
             } while ((io_Row * io_Col) % 2 != 0);
         }
 
@@ -82,10 +81,11 @@ namespace B20_Ex02
                 reveleTile(ref row2, ref col2, isTurnPlayer1, k_SecondRevele);
                 m_Game.CheckTurn(row1, col1, row2, col2, ref isTurnPlayer1);
             }
+
             printScore();
         }
 
-        private void reveleTile(ref int io_Row, ref int io_Col, bool io_TurnPlayer1,int i_ReveledNumber)
+        private void reveleTile(ref int io_Row, ref int io_Col, bool io_TurnPlayer1, int i_ReveledNumber)
         {
             string playerName = m_Game.Player1Name();
 
@@ -112,7 +112,7 @@ namespace B20_Ex02
         private void printScore()
         {
             if (m_Game.GetWinner(out string winner))
-            { //case of tie
+            { // Case of tie
                 Console.WriteLine("It's a TIE!");
             }
             else
@@ -120,7 +120,8 @@ namespace B20_Ex02
                 Console.WriteLine("{0} WON!", winner);
             }
 
-            Console.WriteLine("{0} with {1} pairs reveled.\n{2} with {3} pairs reveled.",
+            Console.WriteLine(
+                "{0} with {1} pairs reveled.\n{2} with {3} pairs reveled.",
                 m_Game.Player1Name(),
                 m_Game.Player1Score(),
                 m_Game.Player2Name(),
@@ -161,8 +162,8 @@ namespace B20_Ex02
         private bool validInput(string i_UserInput, ref int io_Col, ref int io_Row)
         {
             bool isValid = true;
-            char maxLetter = (char)(m_Game.BoardCols() + 'A'-1);
-            char maxNumber = (char)(m_Game.BoardRows() + '1'-1);
+            char maxLetter = (char)(m_Game.BoardCols() + 'A' - 1);
+            char maxNumber = (char)(m_Game.BoardRows() + '1' - 1);
 
             if (i_UserInput == "Q")
             {
@@ -215,8 +216,8 @@ namespace B20_Ex02
                 ConsoleUI Mygame = new ConsoleUI();
                 Mygame.playGame();
 
-
                 Console.WriteLine("Do you wish to play again? \nType 'Y' for Yes \nType 'N' for No");
+
                 while (!char.TryParse(Console.ReadLine(), out input) && input != 'Y' && input != 'N') 
                 {
                     Console.WriteLine("Wrong input!! \nType 'Y' for Yes \nType 'N' for No");
@@ -228,7 +229,6 @@ namespace B20_Ex02
                     play = false;
                 }
             }
-
         }
     }
 }

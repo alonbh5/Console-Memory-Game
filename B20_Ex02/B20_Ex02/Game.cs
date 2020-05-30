@@ -4,24 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-//To Play Game:
-///While (IsGameOver)
-///{  
-///     1.First Revele (row col)
-///     2.Second Revele(row col)
-///     3.Check Turn
-/// }
-/// To get winner use getWinner 
-/// to get score use  getScore
-/// to Get StringBuilde of the Gameboard use ToStringBuilder (Array of Object that use ToString (object[i]=pair # i))
+//// To Play Game:
+//// While (IsGameOver)
+//// {  
+////     1.First Revele (row col)
+////     2.Second Revele(row col)
+////     3.Check Turn
+//// }
+//// To get winner use getWinner 
+//// to get score use  getScore
+//// to Get StringBuilde of the Gameboard use ToStringBuilder (Array of Object that use ToString (object[i]=pair # i))
 
 namespace B20_Ex02
 {
-    class Game
+    internal class Game             //// add internal and private to members
     {
-        Player m_Player1;
-        Player m_Player2;
-        Board m_GameBoard;
+        private Player m_Player1;
+        private Player m_Player2;
+        private Board m_GameBoard;
 
         internal Game(string i_Name1, string i_Name2, bool i_Pvc, int i_Row, int i_Col)
         {
@@ -60,13 +60,13 @@ namespace B20_Ex02
             return m_GameBoard.Rows;
         }
 
-        internal void FirstRevele(int i_Row, int i_Col,bool i_TurnPlayer1)
+        internal void FirstRevele(int i_Row, int i_Col, bool i_TurnPlayer1)
         {
             m_GameBoard.Expose(i_Row, i_Col);
 
             if (m_Player2.Pc && !i_TurnPlayer1) 
             { // This is turn of player 2 and it is AI -> need to update memeory of AI.
-                m_Player2.m_PlayerVsComputer.updateMemory(i_Row, i_Col,m_GameBoard.m_Board[i_Row,i_Col]);
+                m_Player2.m_PlayerVsComputer.updateMemory(i_Row, i_Col, m_GameBoard.m_Board[i_Row, i_Col]);
             }
         }
 
@@ -76,8 +76,7 @@ namespace B20_Ex02
         }
 
         internal void GetInputFromAI(ref int io_Row, ref int io_Col)
-        {
-            
+        {            
             m_Player2.m_PlayerVsComputer.PlayTurn(ref io_Row, ref io_Col, m_GameBoard);
         }
 
@@ -98,7 +97,7 @@ namespace B20_Ex02
             }
 
             if (m_GameBoard.CheckPair(i_Row1, i_Col1, i_Row2, i_Col2))
-            {// CASE FOUND PAIR
+            { // Case found pair
                 currentPlayer.Pairs++;
                 m_GameBoard.PairFound();                
             }
@@ -114,9 +113,10 @@ namespace B20_Ex02
                 if (m_Player2.Pc)
                 {
                     if (io_TurnPlayer1)
-                    { // case not won and not AI turn
+                    { // Case not won and not AI turn
                         m_Player2.m_PlayerVsComputer.updateMemory(i_Row1, i_Col1, m_GameBoard.m_Board[i_Row1, i_Col1]);
                     }
+
                     m_Player2.m_PlayerVsComputer.updateMemory(i_Row2, i_Col2, m_GameBoard.m_Board[i_Row2, i_Col2]);
                 }
 
@@ -148,7 +148,7 @@ namespace B20_Ex02
 
         internal bool CheckTile(int io_Col, int io_Row)
         {
-            return (!m_GameBoard.m_Board[io_Row, io_Col].Expose);
+            return !m_GameBoard.m_Board[io_Row, io_Col].Expose;
         }
 
         internal bool IsGameOver()

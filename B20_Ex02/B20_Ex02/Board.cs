@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace B20_Ex02
 {
-    class Board
+    internal class Board        //// add internal and private to members
     {
         internal Tile[,] m_Board;
-        int m_Rows;
-        int m_Cols;
-        int m_TotalPairs;
-        int m_ExposesPairs;
+        private int m_Rows;
+        private int m_Cols;
+        private int m_TotalPairs;
+        private int m_ExposesPairs;
 
         internal Board(int i_Rows, int i_Cols)
         {
-            if (i_Rows * i_Cols % 2 != 0)
+            if ((i_Rows * i_Cols) % 2 != 0)
             { // Internal check for board size (in addition to UI check)
               // Set default to 4*4
                 i_Rows = 4;
@@ -71,7 +71,7 @@ namespace B20_Ex02
             io_Row = i_Num / m_Cols;
             io_Col = i_Num % m_Cols;
 
-            return (m_Board[io_Row, io_Col].Value.Equals(0));
+            return m_Board[io_Row, io_Col].Value.Equals(0);
         }
 
         internal StringBuilder ToStringBuilder(object[] i_PairArr)   
@@ -112,11 +112,8 @@ namespace B20_Ex02
                             if (m_Board[i - 1, j - 1].Expose)
                             {
                                 boardToPrint.Append("  ");
-                                //char sign = 'A';// + m_Board[i - 1, j - 1].Value;
-                                //object sign = i_firstPair;
-                                //sign--;
                                 index = m_Board[i - 1, j - 1].Value;
-                                boardToPrint.Append(i_PairArr[index-1].ToString());
+                                boardToPrint.Append(i_PairArr[index - 1].ToString());
                                 boardToPrint.Append("   |");
                             }
                             else
@@ -132,12 +129,12 @@ namespace B20_Ex02
                 boardToPrint.Append("\n");
             }
 
-            return (boardToPrint);
+            return boardToPrint;
         }
 
         internal bool IsGameOver()
         {
-            return (m_ExposesPairs == m_TotalPairs);
+            return m_ExposesPairs == m_TotalPairs;
         }
 
         internal void PairFound()
@@ -160,7 +157,7 @@ namespace B20_Ex02
 
         internal bool CheckPair(int i_Row1, int i_Col1, int i_Row2, int i_Col2)
         {
-            return (m_Board[i_Row1, i_Col1].Value == m_Board[i_Row2, i_Col2].Value);
+            return m_Board[i_Row1, i_Col1].Value == m_Board[i_Row2, i_Col2].Value;
         }
     }
 }
