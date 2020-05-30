@@ -1,18 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace B20_Ex02
 {
     internal class Board        //// add internal and private to members
     {
-        internal Tile[,] m_Board;
-        private int m_Rows;
-        private int m_Cols;
-        private int m_TotalPairs;
-        private int m_ExposesPairs;
+        internal Tile[,] m_Board = null;
+        private int m_Rows = 0;
+        private int m_Cols = 0;
+        private int m_TotalPairs = 0;
+        private int m_ExposesPairs = 0;
 
         internal Board(int i_Rows, int i_Cols)
         {
@@ -48,7 +45,7 @@ namespace B20_Ex02
             int row = 0, col = 0, loc1 = 0, loc2 = 0;
             int maxRnd = m_Cols * m_Rows;
 
-            for (int pair = 1; pair <= m_TotalPairs; pair++)
+            for (int pair = 1; pair <= m_TotalPairs; pair++) 
             {
                 do
                 {
