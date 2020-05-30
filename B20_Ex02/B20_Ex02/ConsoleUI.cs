@@ -6,8 +6,8 @@ namespace B20_Ex02
 {
     internal class ConsoleUI            //// add internal
     {
-        private const int k_FirstRevele = 1;
-        private const int k_SecondRevele = 2;
+        private const int k_FirstRevealed = 1;
+        private const int k_SecondRevealed = 2;
 
         private Game m_Game;
         private object[] m_CharsToPrint = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R' };
@@ -77,15 +77,15 @@ namespace B20_Ex02
             while (!m_Game.IsGameOver())
             {
                 printGameBoard();
-                reveleTile(ref row1, ref col1, isTurnPlayer1, k_FirstRevele);
-                reveleTile(ref row2, ref col2, isTurnPlayer1, k_SecondRevele);
+                revealTile(ref row1, ref col1, isTurnPlayer1, k_FirstRevealed);
+                revealTile(ref row2, ref col2, isTurnPlayer1, k_SecondRevealed);
                 m_Game.CheckTurn(row1, col1, row2, col2, ref isTurnPlayer1);
             }
 
             printScore();
         }
 
-        private void reveleTile(ref int io_Row, ref int io_Col, bool io_TurnPlayer1, int i_ReveledNumber)
+        private void revealTile(ref int io_Row, ref int io_Col, bool io_TurnPlayer1, int i_RevealedNumber)
         {
             string playerName = m_Game.Player1Name();
 
@@ -97,13 +97,13 @@ namespace B20_Ex02
             Console.WriteLine("{0}'s turn:\n", playerName);      
             getInput(ref io_Row, ref io_Col, io_TurnPlayer1);
 
-            if (i_ReveledNumber == k_FirstRevele)
+            if (i_RevealedNumber == k_FirstRevealed)
             {
-                m_Game.FirstRevele(io_Row, io_Col, io_TurnPlayer1);
+                m_Game.FirstReveal(io_Row, io_Col, io_TurnPlayer1);
             }
             else
             {
-                m_Game.SecondRevele(io_Row, io_Col, io_TurnPlayer1);
+                m_Game.SecondReveal(io_Row, io_Col, io_TurnPlayer1);
             }
             
             printGameBoard();
@@ -121,7 +121,7 @@ namespace B20_Ex02
             }
 
             Console.WriteLine(
-                "{0} with {1} pairs reveled.\n{2} with {3} pairs reveled.",
+                "{0} with {1} pairs revealed.\n{2} with {3} pairs revealed.",
                 m_Game.Player1Name(),
                 m_Game.Player1Score(),
                 m_Game.Player2Name(),
@@ -199,7 +199,7 @@ namespace B20_Ex02
 
                 if (!isValid) 
                 {
-                    Console.WriteLine("Input tile is already reveld! Try again");
+                    Console.WriteLine("Input tile is already revealed! Try again");
                 }
             }
 

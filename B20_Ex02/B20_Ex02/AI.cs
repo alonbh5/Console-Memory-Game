@@ -1,20 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace B20_Ex02
 {
-    internal struct AIMemCell       //// add internal
+    internal struct AIMemCell       //// add internal, members also?
     {
+        internal int m_Value;
         internal int m_Row;
         internal int m_Col;
-        internal int m_Value;
-        internal bool m_PairFound;
         internal int m_PairRow;
         internal int m_PairCol;
+        internal bool m_PairFound;
         internal bool m_SentFirstLoc;
 
         internal AIMemCell(int i_Row, int i_Col, int i_Value)
@@ -36,7 +31,7 @@ namespace B20_Ex02
 
         private AIMemCell[] m_AIMem = new AIMemCell[k_MaxMem];
         private int m_Turns = 0;
-        private int m_Reveled = 0;
+        private int m_Revealed = 0;
         private bool m_DoSmartChoice = false;
         private int m_PairsInMem = 0;
         private int m_IndexToAdd = 0;
@@ -44,22 +39,22 @@ namespace B20_Ex02
         public void PlayTurn(ref int io_Row, ref int io_Col, Board i_Gameboard)
         {
             bool isRandom = true;
-            m_Reveled++;
+            m_Revealed++;
 
-            if (m_Reveled % 2 != 0)
-            {
+            if (m_Revealed % 2 != 0)
+            { // Check first or second reveal
                 m_Turns++;
             }
 
             if (m_Turns % 3 == 0)
             { // Play smart every 3 turns.
                 m_DoSmartChoice = true;
-            } 
+            }
 
-            if (m_DoSmartChoice && m_PairsInMem > 0)
-            { // And if there is a pair in memory
+            if (m_DoSmartChoice && m_PairsInMem > 0) 
+            { // Play smart if there is a pair in memory
                 int index = memoryInRealTime(i_Gameboard);
-                if (index != k_NotFound)
+                if (index != k_NotFound) 
                 {
                     smartChoice(ref io_Row, ref io_Col, index);
                     isRandom = false;
@@ -75,8 +70,7 @@ namespace B20_Ex02
         private void smartChoice(ref int io_Row, ref int io_Col, int i_Index)
         {
             if (!m_AIMem[i_Index].m_SentFirstLoc) 
-            {
-                //// Send the first coordiante expooer
+            { // Send the first coordiante exposer
                 io_Row = m_AIMem[i_Index].m_Row;
                 io_Col = m_AIMem[i_Index].m_Col;
                 m_AIMem[i_Index].m_SentFirstLoc = true;                
@@ -87,8 +81,8 @@ namespace B20_Ex02
                 io_Col = m_AIMem[i_Index].m_PairCol;              
             }
 
-            if (m_Reveled % 2 == 0) 
-            {
+            if (m_Revealed % 2 == 0) 
+            { // After expose pair, reset setting for what needed
                 m_PairsInMem--;
                 m_AIMem[i_Index].m_PairFound = false;
                 m_AIMem[i_Index].m_SentFirstLoc = false;
@@ -96,25 +90,25 @@ namespace B20_Ex02
             }
         }
 
-        internal void updateMemory(int i_Row, int i_Col, Tile i_Tile)
-        { //// Update AI Memory of tails that just got reveled on board
+        internal void UpdateMemory(int i_Row, int i_Col, Tile i_Tile)
+        { // Update AI Memory with tails that just got revealed on board
             bool isFound = false;
 
             if (m_PairsInMem != k_MaxMem) 
             { // If memeory is not full of pairs 
-                for (int i = 0; i < m_AIMem.Length; i++)
+                for (int i = 0; i < m_AIMem.Length; i++) 
                 { // Find if the AI has seen this tile-pair before
-                    if (m_AIMem[i].m_Value == i_Tile.Value)
+                    if (m_AIMem[i].m_Value == i_Tile.Value) 
                     { // Found this value before
-                        if (!(m_AIMem[i].m_Row == i_Row && m_AIMem[i].m_Col == i_Col))
-                        { // Case the other pair
+                        if (!(m_AIMem[i].m_Row == i_Row && m_AIMem[i].m_Col == i_Col)) 
+                        { // Case the new tile is the other pair
                             m_AIMem[i].m_PairFound = true;
                             m_AIMem[i].m_PairCol = i_Col;
                             m_AIMem[i].m_PairRow = i_Row;
                             m_PairsInMem++;
 
-                            if (m_Reveled % 2 != 0)
-                            { // Case found pair in smartcohice (that goes random)                                
+                            if (m_Revealed % 2 != 0)
+                            { // Case found pair in smartcohice (first reveal was random), replace indexes                       
                                 m_AIMem[i].m_PairCol = m_AIMem[i].m_Col;
                                 m_AIMem[i].m_PairRow = m_AIMem[i].m_Row;
                                 m_AIMem[i].m_Col = i_Col;
@@ -128,8 +122,8 @@ namespace B20_Ex02
                     }
                 }
 
-                if (!isFound)
-                { // Case not seen this tile before - lets remember it
+                if (!isFound) 
+                { // Case not seen this tile before, check index not on pair, add new memory cell
                     while (m_AIMem[m_IndexToAdd % k_MaxMem].m_PairFound)
                     {
                         m_IndexToAdd++;
@@ -146,8 +140,8 @@ namespace B20_Ex02
 
             for (int i = 0; i < m_AIMem.Length; i++)
             {
-                if (m_Reveled % 2 == 0)
-                { // on second reveled, only look for specific pair
+                if (m_Revealed % 2 == 0)
+                { // Case second revealed, only look for specific pair
                     if (m_AIMem[i].m_SentFirstLoc)
                     {
                         index = i;
@@ -157,14 +151,14 @@ namespace B20_Ex02
                 else
                 {
                     if (m_AIMem[i].m_PairFound)
-                    {
+                    { // This memory cell remember pair
                         if (!i_Gameboard.m_Board[m_AIMem[i].m_PairRow, m_AIMem[i].m_PairCol].Expose)
-                        {
+                        { // Case pair isn't expose
                             index = i;
                             break;
                         }
                         else
-                        { // case the pair that the AI remembers was already found by other player
+                        { // Case the pair that the AI remembers was already found by other player, remove from memory
                             m_PairsInMem--;
                             m_AIMem[i].m_PairFound = false;
                             m_AIMem[i].m_SentFirstLoc = false;

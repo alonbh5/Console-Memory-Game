@@ -7,8 +7,8 @@ using System.Threading;
 //// To Play Game:
 //// While (IsGameOver)
 //// {  
-////     1.First Revele (row col)
-////     2.Second Revele(row col)
+////     1.First Reveal (row col)
+////     2.Second Reveal(row col)
 ////     3.Check Turn
 //// }
 //// To get winner use getWinner 
@@ -60,17 +60,17 @@ namespace B20_Ex02
             return m_GameBoard.Rows;
         }
 
-        internal void FirstRevele(int i_Row, int i_Col, bool i_TurnPlayer1)
+        internal void FirstReveal(int i_Row, int i_Col, bool i_TurnPlayer1)
         {
             m_GameBoard.Expose(i_Row, i_Col);
 
             if (m_Player2.Pc && !i_TurnPlayer1) 
             { // This is turn of player 2 and it is AI -> need to update memeory of AI.
-                m_Player2.m_PlayerVsComputer.updateMemory(i_Row, i_Col, m_GameBoard.m_Board[i_Row, i_Col]);
+                m_Player2.m_PlayerVsComputer.UpdateMemory(i_Row, i_Col, m_GameBoard.m_Board[i_Row, i_Col]);
             }
         }
 
-        internal void SecondRevele(int i_Row, int i_Col, bool i_TurnPlayer1)
+        internal void SecondReveal(int i_Row, int i_Col, bool i_TurnPlayer1)
         {
             m_GameBoard.Expose(i_Row, i_Col);
         }
@@ -80,7 +80,7 @@ namespace B20_Ex02
             m_Player2.m_PlayerVsComputer.PlayTurn(ref io_Row, ref io_Col, m_GameBoard);
         }
 
-        private void unrevele(int i_Row1, int i_Col1, int i_Row2, int i_Col2)
+        private void unrevealed(int i_Row1, int i_Col1, int i_Row2, int i_Col2)
         {
             m_GameBoard.Unexpose(i_Row1, i_Col1);
             m_GameBoard.Unexpose(i_Row2, i_Col2);
@@ -104,7 +104,7 @@ namespace B20_Ex02
             else
             {
                 Thread.Sleep(2000);
-                unrevele(i_Row1, i_Col1, i_Row2, i_Col2);
+                unrevealed(i_Row1, i_Col1, i_Row2, i_Col2);
                 changePlayer = true;
             }
 
@@ -114,10 +114,10 @@ namespace B20_Ex02
                 {
                     if (io_TurnPlayer1)
                     { // Case not won and not AI turn
-                        m_Player2.m_PlayerVsComputer.updateMemory(i_Row1, i_Col1, m_GameBoard.m_Board[i_Row1, i_Col1]);
+                        m_Player2.m_PlayerVsComputer.UpdateMemory(i_Row1, i_Col1, m_GameBoard.m_Board[i_Row1, i_Col1]);
                     }
 
-                    m_Player2.m_PlayerVsComputer.updateMemory(i_Row2, i_Col2, m_GameBoard.m_Board[i_Row2, i_Col2]);
+                    m_Player2.m_PlayerVsComputer.UpdateMemory(i_Row2, i_Col2, m_GameBoard.m_Board[i_Row2, i_Col2]);
                 }
 
                 io_TurnPlayer1 = !io_TurnPlayer1;

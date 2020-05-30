@@ -2,7 +2,7 @@ using System;
 
 namespace B20_Ex02
 {
-    internal class Program          //// add internal
+    public class Program          //// add public
     {
         public static void Main()       //// add public
         {
