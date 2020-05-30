@@ -102,7 +102,7 @@ namespace B20_Ex02
             }
             else
             {
-                m_Game.SecondReveal(io_Row, io_Col, io_TurnPlayer1);
+                m_Game.SecondReveal(io_Row, io_Col);
             }
             
             printGameBoard();

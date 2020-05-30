@@ -67,7 +67,7 @@ namespace B20_Ex02
             }
         }
 
-        internal void SecondReveal(int i_Row, int i_Col, bool i_TurnPlayer1)
+        internal void SecondReveal(int i_Row, int i_Col)
         {
             m_GameBoard.Expose(i_Row, i_Col);
         }
