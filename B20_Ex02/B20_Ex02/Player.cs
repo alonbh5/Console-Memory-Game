@@ -1,6 +1,6 @@
 namespace B20_Ex02
 {
-    internal class Player           //// add internal and private to members
+    internal class Player           
     {
         private string m_Name;
         private bool m_Pc;
@@ -9,6 +9,8 @@ namespace B20_Ex02
 
         internal Player(string i_Name, bool i_Pc)
         {
+            //Send i_Pc = True if player is AI
+
             m_Name = i_Name;
             m_Pc = i_Pc;
 

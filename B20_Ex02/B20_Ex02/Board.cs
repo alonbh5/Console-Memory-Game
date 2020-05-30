@@ -3,7 +3,7 @@ using System.Text;
 
 namespace B20_Ex02
 {
-    internal class Board        //// add internal and private to members
+    internal class Board        
     {
         internal Tile[,] m_Board = null;
         private int m_Rows = 0;
@@ -14,8 +14,9 @@ namespace B20_Ex02
         internal Board(int i_Rows, int i_Cols)
         {
             if ((i_Rows * i_Cols) % 2 != 0)
-            { // Internal check for board size (in addition to UI check)
-              // Set default to 4*4
+            { 
+                // Internal check for board size (in addition to UI check)
+                // Set default to 4*4
                 i_Rows = 4;
                 i_Cols = 4;
             }
@@ -41,6 +42,8 @@ namespace B20_Ex02
 
         private void buildBoard()
         {
+            //Randomize GameBoard with Pairs
+            
             Random rnd = new Random();
             int row = 0, col = 0, loc1 = 0, loc2 = 0;
             int maxRnd = m_Cols * m_Rows;
@@ -65,6 +68,9 @@ namespace B20_Ex02
 
         private bool intToLocation(int i_Num, ref int io_Row, ref int io_Col)
         {
+            //Get Num that represent a qaure in Metrix and return Correct Row,Col By ref
+            //For Example 0= > [0,0] , 1 => [0,1] ...
+
             io_Row = i_Num / m_Cols;
             io_Col = i_Num % m_Cols;
 
@@ -73,6 +79,10 @@ namespace B20_Ex02
 
         internal StringBuilder ToStringBuilder(object[] i_PairArr)   
         {
+            //Gets an Array of Object For whom object[i]= pair #i
+            //// NOTICE: Object X in Array of Object must have ToString Function!!
+            //Function Returns A StringBuilder Represantion of GameBoard
+
             StringBuilder boardToPrint = new StringBuilder();
             int rowToPrints = m_Rows + 1;
             int colsToPrints = m_Cols + 1;

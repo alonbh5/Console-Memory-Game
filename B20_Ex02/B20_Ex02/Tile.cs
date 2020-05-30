@@ -1,6 +1,6 @@
 namespace B20_Ex02
 {
-    internal struct Tile            //// add internal
+    internal struct Tile            
     {
         private int m_Value;
         private bool m_Expose;

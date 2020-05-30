@@ -1,13 +1,10 @@
 namespace B20_Ex02
 {
-    public class Program          //// add public
+    public class Program          
     {
-        public static void Main()       //// add public
+        public static void Main()       
         {
             ConsoleUI.RunMainMenu();
-        }
-        //// CHECK RESHARPER        
-        //// add .NET stuff       
-        //// add comments
+        }                 
     }
 }
