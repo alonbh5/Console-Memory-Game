@@ -36,9 +36,13 @@ namespace B20_Ex02
         private int m_PairsInMem = 0;
         private int m_IndexToAdd = 0;
 
+        
         public void PlayTurn(ref int io_Row, ref int io_Col, Board i_Gameboard)
         {
-            bool isRandom = true;
+            //Gets Paramters and Activte Gameboard 
+            //Returns (by ref) Row And Col for Revele - Choose Randomize or Smart (Every 3 turns)
+
+            bool doRandom = true;
             m_Revealed++;
 
             if (m_Revealed % 2 != 0)
@@ -52,16 +56,16 @@ namespace B20_Ex02
             }
 
             if (m_DoSmartChoice && m_PairsInMem > 0) 
-            { // Play smart if there is a pair in memory
+            { // Play smart if there is a pair in memory and it's time for smart choice
                 int index = memoryInRealTime(i_Gameboard);
                 if (index != k_NotFound) 
                 {
                     smartChoice(ref io_Row, ref io_Col, index);
-                    isRandom = false;
+                    doRandom = false;
                 }
             }
 
-            if (isRandom)
+            if (doRandom)
             {
                 randomChoice(ref io_Row, ref io_Col, i_Gameboard);
             }
@@ -69,6 +73,9 @@ namespace B20_Ex02
 
         private void smartChoice(ref int io_Row, ref int io_Col, int i_Index)
         {
+            //Gets Col & Row paramters by ref, and Index known to be loaction on Ai-Memory[Index]=pair
+            //return the Col and Row of the pairs (First, and Second on Second-call)
+
             if (!m_AIMem[i_Index].m_SentFirstLoc) 
             { // Send the first coordiante exposer
                 io_Row = m_AIMem[i_Index].m_Row;
@@ -91,7 +98,11 @@ namespace B20_Ex02
         }
 
         internal void UpdateMemory(int i_Row, int i_Col, Tile i_Tile)
-        { // Update AI Memory with tails that just got revealed on board
+        { 
+            //Update AI Memory with tails that just got revealed on board, Function called when:
+            // 1. Player playied Full Turn and didn't revele pair
+            // 2. Each AI Turn (not if reveled pair in full turn)
+
             bool isFound = false;
 
             if (m_PairsInMem != k_MaxMem) 
@@ -108,7 +119,7 @@ namespace B20_Ex02
                             m_PairsInMem++;
 
                             if (m_Revealed % 2 != 0)
-                            { // Case found pair in smartcohice (first reveal was random), replace indexes                       
+                            { // Case found pair in smartcohice (and first reveal was random), replace indexes                    
                                 m_AIMem[i].m_PairCol = m_AIMem[i].m_Col;
                                 m_AIMem[i].m_PairRow = m_AIMem[i].m_Row;
                                 m_AIMem[i].m_Col = i_Col;
@@ -135,7 +146,10 @@ namespace B20_Ex02
         }
 
         private int memoryInRealTime(Board i_Gameboard)
-        { // Case AI remember a pair for sure
+        { 
+            //Called only when AI remember seen Pair
+            //Gets active gameboard, and return the index of Pair in Ai-Memory
+
             int index = k_NotFound;
 
             for (int i = 0; i < m_AIMem.Length; i++)
@@ -172,6 +186,9 @@ namespace B20_Ex02
 
         private void randomChoice(ref int io_Row, ref int io_Col, Board i_Gameboard)
         {
+            //Gets Col & Row by ref, and gameboard (THAT IS STILL ACTIVE!)
+            //return's by ref Random Row & Col that haven't been reveled
+
             Random rnd = new Random();
             int loc = 0;
             int maxRnd = i_Gameboard.Cols * i_Gameboard.Rows;

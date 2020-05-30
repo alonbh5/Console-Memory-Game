@@ -77,7 +77,7 @@ namespace B20_Ex02
             int rowToPrints = m_Rows + 1;
             int colsToPrints = m_Cols + 1;
             char colLetter = 'A';
-            int index = 0;
+            
 
             for (int i = 0; i < rowToPrints; i++)
             {
@@ -109,7 +109,7 @@ namespace B20_Ex02
                             if (m_Board[i - 1, j - 1].Expose)
                             {
                                 boardToPrint.Append("  ");
-                                index = m_Board[i - 1, j - 1].Value;
+                                int index = m_Board[i - 1, j - 1].Value;
                                 boardToPrint.Append(i_PairArr[index - 1].ToString());
                                 boardToPrint.Append("   |");
                             }
