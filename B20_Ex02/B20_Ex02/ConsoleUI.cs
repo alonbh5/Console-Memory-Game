@@ -1,6 +1,6 @@
 using System;
 using System.Threading;
-using Ex02.ConsoleUtils;
+using System.Text;
 
 namespace B20_Ex02
 {
@@ -71,7 +71,6 @@ namespace B20_Ex02
         private void playGame()
         {
             bool isTurnPlayer1 = true;
-            string prompt = string.Empty;
             int row1 = 0, col1 = 0, row2 = 0, col2 = 0;
 
             while (!m_Game.IsGameOver())
@@ -111,21 +110,27 @@ namespace B20_Ex02
 
         private void printScore()
         {
+            StringBuilder prompt = new StringBuilder();
+            string msg = string.Empty;
+
             if (m_Game.GetWinner(out string winner))
             { // Case of tie
-                Console.WriteLine("It's a TIE!");
+                msg = "It's a TIE!\n";
             }
             else
             {
-                Console.WriteLine("{0} WON!", winner);
+                msg = string.Format("{0} WON!\n", winner);
             }
 
-            Console.WriteLine(
+            prompt.Append(msg);
+            msg = string.Format(
                 "{0} with {1} pairs revealed.\n{2} with {3} pairs revealed.",
                 m_Game.Player1Name(),
                 m_Game.Player1Score(),
                 m_Game.Player2Name(),
                 m_Game.Player2Score());
+            prompt.Append(msg);
+            Console.WriteLine(prompt);
         }
 
         private void getInput(ref int io_Row, ref int io_Col, bool io_TurnPlayer1)
@@ -145,7 +150,9 @@ namespace B20_Ex02
         {
             string turn = string.Empty;
             bool isValid = false;
+
             Console.WriteLine("Enter play (Enter 'Q' to Quit)");
+
             while (!isValid)
             {
                 turn = Console.ReadLine();
@@ -191,10 +198,11 @@ namespace B20_Ex02
                 }
             }
 
-            if(isValid)
+            if (isValid)
             {
                 int.TryParse((i_UserInput[0] - 'A').ToString(), out io_Col);
                 int.TryParse((i_UserInput[1] - '1').ToString(), out io_Row);
+
                 isValid = m_Game.CheckTile(io_Col, io_Row);
 
                 if (!isValid) 
@@ -210,17 +218,19 @@ namespace B20_Ex02
         {
             bool play = true;
             char input = ' ';
-            while (play)
+
+            while (play) 
             {
-                Ex02.ConsoleUtils.Screen.Clear();
                 ConsoleUI Mygame = new ConsoleUI();
+
+                Ex02.ConsoleUtils.Screen.Clear();
                 Mygame.playGame();
 
                 Console.WriteLine("Do you wish to play again? \nType 'Y' for Yes \nType 'N' for No");
 
                 while (!char.TryParse(Console.ReadLine(), out input) && input != 'Y' && input != 'N') 
                 {
-                    Console.WriteLine("Wrong input!! \nType 'Y' for Yes \nType 'N' for No");
+                    Console.WriteLine("Wrong input! \nType 'Y' for Yes \nType 'N' for No");
                 }
                 
                 if (input == 'N')
