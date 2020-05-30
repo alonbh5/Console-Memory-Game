@@ -87,7 +87,9 @@ namespace B20_Ex02
             int rowToPrints = m_Rows + 1;
             int colsToPrints = m_Cols + 1;
             char colLetter = 'A';
-            
+            int NumofSpaces = 7;
+
+
 
             for (int i = 0; i < rowToPrints; i++)
             {
@@ -132,7 +134,7 @@ namespace B20_Ex02
                 }
 
                 boardToPrint.Append("\n   ");
-                boardToPrint.Append('=', 7 * (colsToPrints - 1));
+                boardToPrint.Append('=', NumofSpaces * (colsToPrints - 1));
                 boardToPrint.Append("\n");
             }
 
