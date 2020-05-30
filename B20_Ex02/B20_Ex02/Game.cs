@@ -2,19 +2,22 @@ using System.Text;
 using System.Threading;
 
 //// To Play Game:
-//// While (IsGameOver)
-//// {  
-////     1. First Reveal (row col)
-////     2. Second Reveal(row col)
-////     3. Check Turn
-//// }
+//// 1. Create New Game Object 
+//// 2. While (IsGameOver)
+////    {  
+////      2.1. First Reveal 
+////      2.2. Second Reveal 
+////      2.3. Check Turn
+////    }
+//// To get Input From AI use GetInputFromAI
 //// To get winner use getWinner 
-//// to get score use  getScore
-//// to Get StringBuilde of the Gameboard use ToStringBuilder (Array of Object that use ToString (object[i]=pair # i))
+//// To get score use  getScore
+//// To Get StringBuilde of the Gameboard use ToStringBuilder (Array of Object (object[i]=pair # i))
+//// NOTICE: Object X in Array of Object must have ToString Function!
 
 namespace B20_Ex02
 {
-    internal class Game             //// add internal and private to members
+    internal class Game             
     {
         private Player m_Player1;
         private Player m_Player2;
@@ -22,6 +25,8 @@ namespace B20_Ex02
 
         internal Game(string i_Name1, string i_Name2, bool i_Pvc, int i_Row, int i_Col)
         {
+            //Ctor for New Game - gets name of player 1, name of Player 2 , T / F if Player2 = AI,Row length, Col length
+
             m_Player1 = new Player(i_Name1, false);
             m_Player2 = new Player(i_Name2, i_Pvc);
             m_GameBoard = new Board(i_Row, i_Col);
