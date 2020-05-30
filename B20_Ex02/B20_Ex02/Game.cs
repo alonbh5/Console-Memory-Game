@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 
 //// To Play Game:
 //// While (IsGameOver)
 //// {  
-////     1.First Reveal (row col)
-////     2.Second Reveal(row col)
-////     3.Check Turn
+////     1. First Reveal (row col)
+////     2. Second Reveal(row col)
+////     3. Check Turn
 //// }
 //// To get winner use getWinner 
 //// to get score use  getScore
@@ -65,7 +62,7 @@ namespace B20_Ex02
             m_GameBoard.Expose(i_Row, i_Col);
 
             if (m_Player2.Pc && !i_TurnPlayer1) 
-            { // This is turn of player 2 and it is AI -> need to update memeory of AI.
+            { // Case this is turn of player 2 and it is AI -> need to update memeory of AI.
                 m_Player2.m_PlayerVsComputer.UpdateMemory(i_Row, i_Col, m_GameBoard.m_Board[i_Row, i_Col]);
             }
         }
@@ -109,11 +106,11 @@ namespace B20_Ex02
             }
 
             if (changePlayer)
-            {               
+            { // Case not a pair              
                 if (m_Player2.Pc)
                 {
                     if (io_TurnPlayer1)
-                    { // Case not won and not AI turn
+                    { // Case not won and not AI turn -> update AI memory for both exposures
                         m_Player2.m_PlayerVsComputer.UpdateMemory(i_Row1, i_Col1, m_GameBoard.m_Board[i_Row1, i_Col1]);
                     }
 
