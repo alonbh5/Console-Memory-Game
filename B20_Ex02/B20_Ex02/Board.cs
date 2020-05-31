@@ -85,6 +85,9 @@ namespace B20_Ex02
             int rowToPrints = r_Rows + 1;
             int colsToPrints = r_Cols + 1;
             char colLetter = 'A';
+            char space = ' ';
+            char separator = '|';
+            char rowSpace = '=';
             int numOfSpaces = 7;
 
             for (int i = 0; i < rowToPrints; i++)
@@ -95,12 +98,12 @@ namespace B20_Ex02
                     {
                         if (j == 0)
                         {
-                            boardToPrint.Append("      ");
+                            boardToPrint.Append(space, numOfSpaces - 1);
                         }
                         else
                         {
                             boardToPrint.Append(colLetter);
-                            boardToPrint.Append("      ");
+                            boardToPrint.Append(space, numOfSpaces - 1);
                             colLetter++;
                         }
                     }
@@ -108,30 +111,34 @@ namespace B20_Ex02
                     {
                         if (j == 0)
                         {
-                            boardToPrint.Append(" ");
+                            boardToPrint.Append(space);
                             boardToPrint.Append(i);
-                            boardToPrint.Append(" |");
+                            boardToPrint.Append(space);
+                            boardToPrint.Append(separator);
                         }
                         else
                         {
                             if (m_Board[i - 1, j - 1].Expose)
                             {
-                                boardToPrint.Append("  ");
+                                boardToPrint.Append(space, numOfSpaces - 5);
                                 int index = m_Board[i - 1, j - 1].Value;
                                 boardToPrint.Append(i_PairArr[index - 1].ToString());
-                                boardToPrint.Append("   |");
+                                boardToPrint.Append(space, numOfSpaces - 4);
+                                boardToPrint.Append(separator);
                             }
                             else
                             {
-                                boardToPrint.Append("      |");
+                                boardToPrint.Append(space, numOfSpaces - 1);
+                                boardToPrint.Append(separator);
                             }
                         }
                     }
                 }
 
-                boardToPrint.Append("\n   ");
-                boardToPrint.Append('=', numOfSpaces * (colsToPrints - 1));
-                boardToPrint.Append("\n");
+                boardToPrint.Append(Environment.NewLine);
+                boardToPrint.Append(space, numOfSpaces - 4);
+                boardToPrint.Append(rowSpace, (numOfSpaces * (colsToPrints - 1)) + 1);
+                boardToPrint.Append(Environment.NewLine);
             }
 
             return boardToPrint;
