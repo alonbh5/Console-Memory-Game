@@ -35,13 +35,12 @@ namespace B20_Ex02
         private bool m_DoSmartChoice = false;
         private int m_PairsInMem = 0;
         private int m_IndexToAdd = 0;
-
         
         public void PlayTurn(ref int io_Row, ref int io_Col, Board i_Gameboard)
         {
-            // Gets Paramters and Activte Gameboard 
-            // Returns (by ref) Row And Col for Reveal - Choose Randomize or Smart (Every 3 turns)
-
+            //// Gets Paramters and Activte Gameboard 
+            //// Returns (by ref) Row And Col for Reveal - Choose Randomize or Smart (Every 3 turns)
+            
             bool doRandom = true;
             m_Revealed++;
 
@@ -73,9 +72,9 @@ namespace B20_Ex02
 
         private void smartChoice(ref int io_Row, ref int io_Col, int i_Index)
         {
-            // Gets Col & Row parameters by ref, and Index known to be location on AI-Memory[Index]=pair
-            // Return the Col and Row of the pairs (First, and Second on Second-call)
-
+            //// Gets Col & Row parameters by ref, and Index known to be location on AI-Memory[Index]=pair
+            //// Return the Col and Row of the pairs (First, and Second on Second-call)
+            
             if (!m_AIMem[i_Index].m_SentFirstLoc)
             { // Send the first coordinate exposer
                 io_Row = m_AIMem[i_Index].m_Row;
@@ -99,9 +98,9 @@ namespace B20_Ex02
 
         internal void UpdateMemory(int i_Row, int i_Col, Tile i_Tile)
         { 
-            // Update AI Memory with tails that just got revealed on board, Function called when:
-            // 1. Player played full turn (two exposures) and didn't reveal a pair.
-            // 2. Each AI Turn (not if revealed pair in full turn)
+            //// Update AI Memory with tails that just got revealed on board, Function called when:
+            //// 1. Player played full turn (two exposures) and didn't reveal a pair.
+            //// 2. Each AI Turn (not if revealed pair in full turn)
 
             bool isFound = false;
 
@@ -147,8 +146,8 @@ namespace B20_Ex02
 
         private int memoryInRealTime(Board i_Gameboard)
         { 
-            // Called only when AI remember seen pair
-            // Gets active gameboard, and return the index of pair in AI-Memory
+            //// Called only when AI remember seen pair
+            //// Gets active gameboard, and return the index of pair in AI-Memory
 
             int index = k_NotFound;
 
@@ -186,8 +185,8 @@ namespace B20_Ex02
 
         private void randomChoice(ref int io_Row, ref int io_Col, Board i_Gameboard)
         {
-            // Gets col & row by ref, and gameboard (THAT IS STILL ACTIVE!)
-            // Return's by ref random row & Col that haven't been reveled
+            //// Gets col & row by ref, and gameboard (THAT IS STILL ACTIVE!)
+            //// Return's by ref random row & col that haven't been reveled
 
             Random rnd = new Random();
             int loc = 0;
@@ -196,7 +195,8 @@ namespace B20_Ex02
             do
             {
                 loc = rnd.Next(maxRnd);
-            } while (checkRandomLocation(loc, ref io_Row, ref io_Col, i_Gameboard));
+            }
+            while (checkRandomLocation(loc, ref io_Row, ref io_Col, i_Gameboard));
         }
 
         private bool checkRandomLocation(int i_Num, ref int io_Row, ref int io_Col, Board i_Gameboard)

@@ -4,15 +4,15 @@ using System.Text;
 
 namespace B20_Ex02
 {
-    internal class ConsoleUI            //// add internal
+    public class ConsoleUI
     {
         private const int k_FirstRevealed = 1;
         private const int k_SecondRevealed = 2;
 
+        private readonly object[] m_CharsToPrint = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R' };
         private Game m_Game;
-        private object[] m_CharsToPrint = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R' };
 
-        internal ConsoleUI()        //// add internal 
+        internal ConsoleUI()
         {
             string player1Name, player2Name;
             bool isPvc = false;
@@ -65,7 +65,8 @@ namespace B20_Ex02
                 {
                     Console.WriteLine("The number of board tiles must be even!");
                 }
-            } while ((io_Row * io_Col) % 2 != 0);
+            }
+            while ((io_Row * io_Col) % 2 != 0);
         }
 
         private void playGame()

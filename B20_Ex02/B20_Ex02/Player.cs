@@ -8,9 +8,7 @@ namespace B20_Ex02
         internal AI m_PlayerVsComputer;
 
         internal Player(string i_Name, bool i_Pc)
-        {
-            //Send i_Pc = True if player is AI
-
+        { // Send i_Pc = True if player is AI
             m_Name = i_Name;
             m_Pc = i_Pc;
 

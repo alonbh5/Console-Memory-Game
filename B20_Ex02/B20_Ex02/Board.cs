@@ -41,9 +41,7 @@ namespace B20_Ex02
         }
 
         private void buildBoard()
-        {
-            //Randomize GameBoard with Pairs
-            
+        { // Randomize GameBoard with Pairs            
             Random rnd = new Random();
             int row = 0, col = 0, loc1 = 0, loc2 = 0;
             int maxRnd = m_Cols * m_Rows;
@@ -53,14 +51,16 @@ namespace B20_Ex02
                 do
                 {
                     loc1 = rnd.Next(maxRnd);
-                } while (!intToLocation(loc1, ref row, ref col));
+                }
+                while (!intToLocation(loc1, ref row, ref col));
 
                 m_Board[row, col].Value = pair;
 
                 do
                 {
                     loc2 = rnd.Next(maxRnd);
-                } while (!intToLocation(loc2, ref row, ref col));
+                }
+                while (!intToLocation(loc2, ref row, ref col));
 
                 m_Board[row, col].Value = pair;
             }
@@ -68,8 +68,8 @@ namespace B20_Ex02
 
         private bool intToLocation(int i_Num, ref int io_Row, ref int io_Col)
         {
-            //Get Num that represent a qaure in Metrix and return Correct Row,Col By ref
-            //For Example 0= > [0,0] , 1 => [0,1] ...
+            //// Get num that represent a sqaure in metrix and return correct row, col by ref
+            //// For Example 0= > [0,0] , 1 => [0,1] ...
 
             io_Row = i_Num / m_Cols;
             io_Col = i_Num % m_Cols;
@@ -79,17 +79,15 @@ namespace B20_Ex02
 
         internal StringBuilder ToStringBuilder(object[] i_PairArr)   
         {
-            //Gets an Array of Object For whom object[i]= pair #i
-            //// NOTICE: Object X in Array of Object must have ToString Function!!
-            //Function Returns A StringBuilder Represantion of GameBoard
+            //// Gets an array of object for whom object[i]= pair #i
+            //// NOTICE: object X in array of objects must have ToString Function!!
+            //// Function returns a StringBuilder represantion of Gameboard
 
             StringBuilder boardToPrint = new StringBuilder();
             int rowToPrints = m_Rows + 1;
             int colsToPrints = m_Cols + 1;
             char colLetter = 'A';
-            int NumofSpaces = 7;
-
-
+            int numOfSpaces = 7;
 
             for (int i = 0; i < rowToPrints; i++)
             {
@@ -134,7 +132,7 @@ namespace B20_Ex02
                 }
 
                 boardToPrint.Append("\n   ");
-                boardToPrint.Append('=', NumofSpaces * (colsToPrints - 1));
+                boardToPrint.Append('=', numOfSpaces * (colsToPrints - 1));
                 boardToPrint.Append("\n");
             }
 

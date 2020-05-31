@@ -25,8 +25,8 @@ namespace B20_Ex02
 
         public Game(string i_Name1, string i_Name2, bool i_Pvc, int i_Row, int i_Col)
         {
-            // Ctor for New Game - gets name of player 1, name of player 2,
-            // T / F if Player2 = AI, Row length, Col length
+            //// Ctor for new game - gets name of player 1, name of player 2,
+            //// T / F if Player2 = AI, Row length, Col length
 
             m_Player1 = new Player(i_Name1, false);
             m_Player2 = new Player(i_Name2, i_Pvc);
