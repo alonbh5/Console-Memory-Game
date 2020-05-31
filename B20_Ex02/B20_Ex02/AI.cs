@@ -2,7 +2,7 @@ using System;
 
 namespace B20_Ex02
 {
-    internal struct AIMemCell       //// add internal, members also?
+    internal struct AIMemCell
     {
         internal int m_Value;
         internal int m_Row;
@@ -24,7 +24,7 @@ namespace B20_Ex02
         }
     }
 
-    internal class AI       //// add internal and private to members
+    internal class AI
     {
         private const int k_MaxMem = 6;
         private const int k_NotFound = -1;

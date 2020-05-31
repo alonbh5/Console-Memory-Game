@@ -5,18 +5,16 @@ namespace B20_Ex02
 {
     internal class Board        
     {
-        internal Tile[,] m_Board = null;
-        private int m_Rows = 0;
-        private int m_Cols = 0;
-        private int m_TotalPairs = 0;
-        private int m_ExposesPairs = 0;
+        internal Tile[,] m_Board;
+        private readonly int m_Rows;
+        private readonly int m_Cols;
+        private readonly int m_TotalPairs;
+        private int m_ExposesPairs;
 
         internal Board(int i_Rows, int i_Cols)
         {
             if ((i_Rows * i_Cols) % 2 != 0)
-            { 
-                // Internal check for board size (in addition to UI check)
-                // Set default to 4*4
+            { // Internal check for board size (in addition to UI check), set default to 4*4
                 i_Rows = 4;
                 i_Cols = 4;
             }
