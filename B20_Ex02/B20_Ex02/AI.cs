@@ -111,25 +111,26 @@ namespace B20_Ex02
                 { // Find if the AI has seen this tile-pair before
                     if (m_AIMem[i].m_Value == i_Value)
                     { // Found this value before
-                        if (!(m_AIMem[i].m_Row == i_Row && m_AIMem[i].m_Col == i_Col)) 
+                        if (!(m_AIMem[i].m_Row == i_Row && m_AIMem[i].m_Col == i_Col))
                         { // Case the new tile is the other pair
                             m_AIMem[i].m_PairFound = true;
                             m_AIMem[i].m_PairCol = i_Col;
                             m_AIMem[i].m_PairRow = i_Row;
                             m_PairsInMem++;
 
-                            if (m_Revealed % 2 != 0)
-                            { // Case found pair in smartcohice (and first reveal was random), replace indexes                    
+                            if (m_Revealed % 2 != 0 && m_DoSmartChoice)
+                            { // Case found pair in smartcohice (and first reveal was random), replace indexes           
                                 m_AIMem[i].m_PairCol = m_AIMem[i].m_Col;
                                 m_AIMem[i].m_PairRow = m_AIMem[i].m_Row;
                                 m_AIMem[i].m_Col = i_Col;
                                 m_AIMem[i].m_Row = i_Row;
                                 m_AIMem[i].m_SentFirstLoc = true;
                             }
-                        }
 
-                        isFound = true;
-                        break;
+                        }
+                            isFound = true;
+                            break;
+                        
                     }
                 }
 
