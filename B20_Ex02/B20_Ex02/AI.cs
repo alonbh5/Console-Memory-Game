@@ -38,8 +38,8 @@ namespace B20_Ex02
         
         public void PlayTurn(ref int io_Row, ref int io_Col, Board i_Gameboard)
         {
-            //// Gets Paramters and Activte Gameboard 
-            //// Returns (by ref) Row And Col for Reveal - Choose Randomize or Smart (Every 3 turns)
+            //// Gets parameters and active gameboard 
+            //// Returns (by ref) row and col for reveal - choose randomize or smart (every 3 turns)
             
             bool doRandom = true;
             m_Revealed++;
@@ -57,6 +57,7 @@ namespace B20_Ex02
             if (m_DoSmartChoice && m_PairsInMem > 0) 
             { // Play smart if there is a pair in memory and it's time for smart choice
                 int index = memoryInRealTime(i_Gameboard);
+
                 if (index != k_NotFound) 
                 {
                     smartChoice(ref io_Row, ref io_Col, index);

@@ -222,6 +222,7 @@ namespace B20_Ex02
 
             while (play) 
             {
+                Ex02.ConsoleUtils.Screen.Clear();
                 ConsoleUI Mygame = new ConsoleUI();
 
                 Ex02.ConsoleUtils.Screen.Clear();
@@ -236,7 +237,9 @@ namespace B20_Ex02
                 
                 if (input == 'N')
                 {
+                    Ex02.ConsoleUtils.Screen.Clear();
                     Console.WriteLine("Bye Bye! \nexiting game");
+                    Thread.Sleep(1000);
                     play = false;
                 }
             }

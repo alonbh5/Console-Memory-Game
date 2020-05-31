@@ -6,9 +6,9 @@ namespace B20_Ex02
     internal class Board        
     {
         internal Tile[,] m_Board;
-        private readonly int m_Rows;
-        private readonly int m_Cols;
-        private readonly int m_TotalPairs;
+        private readonly int r_Rows;
+        private readonly int r_Cols;
+        private readonly int r_TotalPairs;
         private int m_ExposesPairs;
 
         internal Board(int i_Rows, int i_Cols)
@@ -20,9 +20,9 @@ namespace B20_Ex02
             }
 
             m_Board = new Tile[i_Rows, i_Cols];
-            m_Rows = i_Rows;
-            m_Cols = i_Cols;
-            m_TotalPairs = (i_Rows * i_Cols) / 2;
+            r_Rows = i_Rows;
+            r_Cols = i_Cols;
+            r_TotalPairs = (i_Rows * i_Cols) / 2;
             m_ExposesPairs = 0;
 
             buildBoard();
@@ -30,21 +30,21 @@ namespace B20_Ex02
 
         internal int Rows
         {
-            get { return m_Rows; }
+            get { return r_Rows; }
         }
 
         internal int Cols
         {
-            get { return m_Cols; }
+            get { return r_Cols; }
         }
 
         private void buildBoard()
         { // Randomize GameBoard with Pairs            
             Random rnd = new Random();
             int row = 0, col = 0, loc1 = 0, loc2 = 0;
-            int maxRnd = m_Cols * m_Rows;
+            int maxRnd = r_Cols * r_Rows;
 
-            for (int pair = 1; pair <= m_TotalPairs; pair++) 
+            for (int pair = 1; pair <= r_TotalPairs; pair++) 
             {
                 do
                 {
@@ -69,8 +69,8 @@ namespace B20_Ex02
             //// Get num that represent a sqaure in metrix and return correct row, col by ref
             //// For Example 0= > [0,0] , 1 => [0,1] ...
 
-            io_Row = i_Num / m_Cols;
-            io_Col = i_Num % m_Cols;
+            io_Row = i_Num / r_Cols;
+            io_Col = i_Num % r_Cols;
 
             return m_Board[io_Row, io_Col].Value.Equals(0);
         }
@@ -82,8 +82,8 @@ namespace B20_Ex02
             //// Function returns a StringBuilder represantion of Gameboard
 
             StringBuilder boardToPrint = new StringBuilder();
-            int rowToPrints = m_Rows + 1;
-            int colsToPrints = m_Cols + 1;
+            int rowToPrints = r_Rows + 1;
+            int colsToPrints = r_Cols + 1;
             char colLetter = 'A';
             int numOfSpaces = 7;
 
@@ -139,12 +139,12 @@ namespace B20_Ex02
 
         internal bool IsGameOver()
         {
-            return m_ExposesPairs == m_TotalPairs;
+            return m_ExposesPairs == r_TotalPairs;
         }
 
         internal void PairFound()
         {
-            if (m_TotalPairs != m_ExposesPairs)
+            if (r_TotalPairs != m_ExposesPairs)
             {
                 m_ExposesPairs++;
             }
