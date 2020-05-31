@@ -9,7 +9,7 @@ namespace B20_Ex02
         private const int k_FirstRevealed = 1;
         private const int k_SecondRevealed = 2;
 
-        private readonly object[] m_CharsToPrint = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R' };
+        private readonly object[] r_CharsToPrint = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R' };
         private Game m_Game;
 
         internal ConsoleUI()
@@ -94,7 +94,7 @@ namespace B20_Ex02
                 playerName = m_Game.Player2Name();
             }
 
-            Console.WriteLine("{0}'s turn:\n", playerName);      
+            Console.WriteLine("{0}'s turn:{1}", playerName, Environment.NewLine);    
             getInput(ref io_Row, ref io_Col, io_TurnPlayer1);
 
             if (i_RevealedNumber == k_FirstRevealed)
@@ -120,14 +120,15 @@ namespace B20_Ex02
             }
             else
             {
-                msg = string.Format("{0} WON!\n", winner);
+                msg = string.Format("{0} WON!{1}", winner, Environment.NewLine);
             }
 
             prompt.Append(msg);
             msg = string.Format(
-                "{0} with {1} pairs revealed.\n{2} with {3} pairs revealed.",
+                "{0} with {1} pairs revealed.{2}{3} with {4} pairs revealed.",
                 m_Game.Player1Name(),
                 m_Game.Player1Score(),
+                Environment.NewLine,
                 m_Game.Player2Name(),
                 m_Game.Player2Score());
             prompt.Append(msg);
@@ -164,7 +165,7 @@ namespace B20_Ex02
         private void printGameBoard()
         {            
             Ex02.ConsoleUtils.Screen.Clear();
-            Console.WriteLine(m_Game.ToStringBuilder(m_CharsToPrint));
+            Console.WriteLine(m_Game.ToStringBuilder(r_CharsToPrint));
         }
 
         private bool validInput(string i_UserInput, ref int io_Col, ref int io_Row)
@@ -175,8 +176,10 @@ namespace B20_Ex02
 
             if (i_UserInput == "Q")
             {
-                Console.WriteLine("Bye Bye!\nexit game.");
-                System.Environment.Exit(1);
+                Ex02.ConsoleUtils.Screen.Clear();
+                Console.WriteLine("Bye Bye!{0}exiting game", Environment.NewLine);
+                Thread.Sleep(1000);
+                Environment.Exit(1);
             }
 
             if (i_UserInput.Length != 2 )
@@ -228,17 +231,17 @@ namespace B20_Ex02
                 Ex02.ConsoleUtils.Screen.Clear();
                 Mygame.playGame();
 
-                Console.WriteLine("Do you wish to play again? \nType 'Y' for Yes \nType 'N' for No");
+                Console.WriteLine("Do you wish to play again?{0}Type 'Y' for Yes{0}Type 'N' for No", Environment.NewLine);
 
                 while (!char.TryParse(Console.ReadLine(), out input) && input != 'Y' && input != 'N') 
                 {
-                    Console.WriteLine("Wrong input! \nType 'Y' for Yes \nType 'N' for No");
+                    Console.WriteLine("Wrong input!{0}Type 'Y' for Yes{0}Type 'N' for No", Environment.NewLine);
                 }
                 
                 if (input == 'N')
                 {
                     Ex02.ConsoleUtils.Screen.Clear();
-                    Console.WriteLine("Bye Bye! \nexiting game");
+                    Console.WriteLine("Bye Bye!{0}exiting game", Environment.NewLine);
                     Thread.Sleep(1000);
                     play = false;
                 }

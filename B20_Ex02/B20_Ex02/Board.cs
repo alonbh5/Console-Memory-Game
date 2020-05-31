@@ -22,7 +22,7 @@ namespace B20_Ex02
             m_Board = new Tile[i_Rows, i_Cols];
             r_Rows = i_Rows;
             r_Cols = i_Cols;
-            r_TotalPairs = (i_Rows * i_Cols) / 2;
+            r_TotalPairs = (Rows * Cols) / 2;
             m_ExposesPairs = 0;
 
             buildBoard();
@@ -42,7 +42,7 @@ namespace B20_Ex02
         { // Randomize GameBoard with Pairs            
             Random rnd = new Random();
             int row = 0, col = 0, loc1 = 0, loc2 = 0;
-            int maxRnd = r_Cols * r_Rows;
+            int maxRnd = Cols * Rows;
 
             for (int pair = 1; pair <= r_TotalPairs; pair++) 
             {
@@ -69,8 +69,8 @@ namespace B20_Ex02
             //// Get num that represent a sqaure in metrix and return correct row, col by ref
             //// For Example 0= > [0,0] , 1 => [0,1] ...
 
-            io_Row = i_Num / r_Cols;
-            io_Col = i_Num % r_Cols;
+            io_Row = i_Num / Cols;
+            io_Col = i_Num % Cols;
 
             return m_Board[io_Row, io_Col].Value.Equals(0);
         }
@@ -82,8 +82,8 @@ namespace B20_Ex02
             //// Function returns a StringBuilder represantion of Gameboard
 
             StringBuilder boardToPrint = new StringBuilder();
-            int rowToPrints = r_Rows + 1;
-            int colsToPrints = r_Cols + 1;
+            int rowToPrints = Rows + 1;
+            int colsToPrints = Cols + 1;
             char colLetter = 'A';
             char space = ' ';
             char separator = '|';
