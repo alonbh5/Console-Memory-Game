@@ -17,52 +17,53 @@ using System.Threading;
 
 namespace B20_Ex02
 {
-    internal class Game             
+    public class Game             
     {
         private Player m_Player1;
         private Player m_Player2;
         private Board m_GameBoard;
 
-        internal Game(string i_Name1, string i_Name2, bool i_Pvc, int i_Row, int i_Col)
+        public Game(string i_Name1, string i_Name2, bool i_Pvc, int i_Row, int i_Col)
         {
-            //Ctor for New Game - gets name of player 1, name of Player 2 , T / F if Player2 = AI,Row length, Col length
+            // Ctor for New Game - gets name of player 1, name of player 2,
+            // T / F if Player2 = AI, Row length, Col length
 
             m_Player1 = new Player(i_Name1, false);
             m_Player2 = new Player(i_Name2, i_Pvc);
             m_GameBoard = new Board(i_Row, i_Col);
         }
 
-        internal string Player1Name()
+        public string Player1Name()
         {
             return m_Player1.Name;
         }
 
-        internal string Player2Name()
+        public string Player2Name()
         {
             return m_Player2.Name;
         }
 
-        internal int Player1Score()
+        public int Player1Score()
         {
             return m_Player1.Pairs;
         }
 
-        internal int Player2Score()
+        public int Player2Score()
         {
             return m_Player2.Pairs;
         }
 
-        internal int BoardCols()
+        public int BoardCols()
         {
             return m_GameBoard.Cols;
         }
 
-        internal int BoardRows()
+        public int BoardRows()
         {
             return m_GameBoard.Rows;
         }
 
-        internal void FirstReveal(int i_Row, int i_Col, bool i_TurnPlayer1)
+        public void FirstReveal(int i_Row, int i_Col, bool i_TurnPlayer1)
         {
             m_GameBoard.Expose(i_Row, i_Col);
 
@@ -72,12 +73,12 @@ namespace B20_Ex02
             }
         }
 
-        internal void SecondReveal(int i_Row, int i_Col)
+        public void SecondReveal(int i_Row, int i_Col)
         {
             m_GameBoard.Expose(i_Row, i_Col);
         }
 
-        internal void GetInputFromAI(ref int io_Row, ref int io_Col)
+        public void GetInputFromAI(ref int io_Row, ref int io_Col)
         {            
             m_Player2.m_PlayerVsComputer.PlayTurn(ref io_Row, ref io_Col, m_GameBoard);
         }
@@ -88,7 +89,7 @@ namespace B20_Ex02
             m_GameBoard.Unexpose(i_Row2, i_Col2);
         }
 
-        internal void CheckTurn(int i_Row1, int i_Col1, int i_Row2, int i_Col2, ref bool io_TurnPlayer1)
+        public void CheckTurn(int i_Row1, int i_Col1, int i_Row2, int i_Col2, ref bool io_TurnPlayer1)
         {
             bool changePlayer = false;
             Player currentPlayer = m_Player1;
@@ -126,7 +127,7 @@ namespace B20_Ex02
             }
         }
 
-        internal bool GetWinner(out string o_Winner)
+        public bool GetWinner(out string o_Winner)
         {
             bool isTie = false;
 
@@ -148,22 +149,22 @@ namespace B20_Ex02
             return isTie;
         }
 
-        internal bool CheckTile(int io_Col, int io_Row)
+        public bool CheckTile(int io_Col, int io_Row)
         {
             return !m_GameBoard.m_Board[io_Row, io_Col].Expose;
         }
 
-        internal bool IsGameOver()
+        public bool IsGameOver()
         {
             return m_GameBoard.IsGameOver();
         }
 
-        internal bool IsAIPlay()
+        public bool IsAIPlay()
         {
             return m_Player2.Pc;
         }
 
-        internal StringBuilder ToStringBuilder(object[] io_CharsToPrint)
+        public StringBuilder ToStringBuilder(object[] io_CharsToPrint)
         {
             return m_GameBoard.ToStringBuilder(io_CharsToPrint);
         }
