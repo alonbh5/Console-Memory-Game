@@ -2,17 +2,17 @@ namespace B20_Ex02
 {
     internal class Player           
     {
-        private string m_Name;
-        private bool m_Pc;
+        private readonly string r_Name;
+        private readonly bool r_Pc;
         private int m_Pairs;
         internal AI m_PlayerVsComputer;
 
         internal Player(string i_Name, bool i_Pc)
         { // Send i_Pc = True if player is AI
-            m_Name = i_Name;
-            m_Pc = i_Pc;
+            r_Name = i_Name;
+            r_Pc = i_Pc;
 
-            if (m_Pc)
+            if (Pc)
             {
                 m_PlayerVsComputer = new AI();
             }
@@ -20,7 +20,7 @@ namespace B20_Ex02
 
         internal string Name
         {
-            get { return m_Name; }
+            get { return r_Name; }
         }
 
         internal int Pairs
@@ -31,7 +31,7 @@ namespace B20_Ex02
 
         internal bool Pc
         {
-            get { return m_Pc; }
+            get { return r_Pc; }
         }
     }
 }

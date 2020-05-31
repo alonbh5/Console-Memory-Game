@@ -114,7 +114,7 @@ namespace B20_Ex02
             }
 
             if (changePlayer)
-            { // Case not a pair              
+            { // Case not found a pair              
                 if (m_Player2.Pc)
                 {
                     if (io_TurnPlayer1)
@@ -130,7 +130,7 @@ namespace B20_Ex02
         }
 
         public bool GetWinner(out string o_Winner)
-        {
+        { // Return true if it's a tie or false if there is one winner
             bool isTie = false;
 
             if (m_Player1.Pairs == m_Player2.Pairs)
