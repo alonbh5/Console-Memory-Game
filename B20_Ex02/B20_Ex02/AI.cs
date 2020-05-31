@@ -109,7 +109,7 @@ namespace B20_Ex02
             { // If memeory is not full of pairs 
                 for (int i = 0; i < m_AIMem.Length; i++) 
                 { // Find if the AI has seen this tile-pair before
-                    if (m_AIMem[i].m_Value == i_Value) 
+                    if (m_AIMem[i].m_Value == i_Value)
                     { // Found this value before
                         if (!(m_AIMem[i].m_Row == i_Row && m_AIMem[i].m_Col == i_Col)) 
                         { // Case the new tile is the other pair

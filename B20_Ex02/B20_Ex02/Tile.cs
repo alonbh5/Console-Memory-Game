@@ -5,12 +5,6 @@ namespace B20_Ex02
         private int m_Value;
         private bool m_Expose;
 
-        //internal Tile(int Value)
-        //{
-        //    r_Value = Value;
-        //    m_Expose = false;
-        //}
-
         internal int Value
         {
             get { return m_Value; }
