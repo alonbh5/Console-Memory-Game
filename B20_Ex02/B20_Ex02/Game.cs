@@ -28,7 +28,9 @@ namespace B20_Ex02
             //// Ctor for new game - gets name of player 1, name of player 2,
             //// T / F if Player2 = AI, Row length, Col length
 
-            m_Player1 = new Player(i_Name1, false);
+            const bool v_PlayerIsComputer = false;
+
+            m_Player1 = new Player(i_Name1, v_PlayerIsComputer);
             m_Player2 = new Player(i_Name2, i_Pvc);
             m_GameBoard = new Board(i_Row, i_Col);
         }
