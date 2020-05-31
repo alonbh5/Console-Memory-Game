@@ -97,7 +97,7 @@ namespace B20_Ex02
             }
         }
 
-        internal void UpdateMemory(int i_Row, int i_Col, Tile i_Tile)
+        internal void UpdateMemory(int i_Row, int i_Col, int i_Value)
         { 
             //// Update AI Memory with tails that just got revealed on board, Function called when:
             //// 1. Player played full turn (two exposures) and didn't reveal a pair.
@@ -109,7 +109,7 @@ namespace B20_Ex02
             { // If memeory is not full of pairs 
                 for (int i = 0; i < m_AIMem.Length; i++) 
                 { // Find if the AI has seen this tile-pair before
-                    if (m_AIMem[i].m_Value == i_Tile.Value) 
+                    if (m_AIMem[i].m_Value == i_Value) 
                     { // Found this value before
                         if (!(m_AIMem[i].m_Row == i_Row && m_AIMem[i].m_Col == i_Col)) 
                         { // Case the new tile is the other pair
@@ -140,7 +140,7 @@ namespace B20_Ex02
                         m_IndexToAdd++;
                     }
 
-                    m_AIMem[m_IndexToAdd++ % k_MaxMem] = new AIMemCell(i_Row, i_Col, i_Tile.Value);
+                    m_AIMem[m_IndexToAdd++ % k_MaxMem] = new AIMemCell(i_Row, i_Col, i_Value);
                 }
             }
         }

@@ -71,7 +71,7 @@ namespace B20_Ex02
 
             if (m_Player2.Pc && !i_TurnPlayer1) 
             { // Case this is turn of player 2 and it is AI -> need to update memeory of AI.
-                m_Player2.m_PlayerVsComputer.UpdateMemory(i_Row, i_Col, m_GameBoard.m_Board[i_Row, i_Col]);
+                m_Player2.m_PlayerVsComputer.UpdateMemory(i_Row, i_Col, m_GameBoard.m_Board[i_Row, i_Col].Value);
             }
         }
 
@@ -119,10 +119,10 @@ namespace B20_Ex02
                 {
                     if (io_TurnPlayer1)
                     { // Case not won and not AI turn -> update AI memory for both exposures
-                        m_Player2.m_PlayerVsComputer.UpdateMemory(i_Row1, i_Col1, m_GameBoard.m_Board[i_Row1, i_Col1]);
+                        m_Player2.m_PlayerVsComputer.UpdateMemory(i_Row1, i_Col1, m_GameBoard.m_Board[i_Row1, i_Col1].Value);
                     }
 
-                    m_Player2.m_PlayerVsComputer.UpdateMemory(i_Row2, i_Col2, m_GameBoard.m_Board[i_Row2, i_Col2]);
+                    m_Player2.m_PlayerVsComputer.UpdateMemory(i_Row2, i_Col2, m_GameBoard.m_Board[i_Row2, i_Col2].Value);
                 }
 
                 io_TurnPlayer1 = !io_TurnPlayer1;

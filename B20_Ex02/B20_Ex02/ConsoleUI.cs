@@ -231,7 +231,7 @@ namespace B20_Ex02
                 Ex02.ConsoleUtils.Screen.Clear();
                 Mygame.playGame();
 
-                Console.WriteLine("Do you wish to play again?{0}Type 'Y' for Yes{0}Type 'N' for No", Environment.NewLine);
+                Console.WriteLine("{0}Do you wish to play again?{0}Type 'Y' for Yes{0}Type 'N' for No", Environment.NewLine);
 
                 while (!char.TryParse(Console.ReadLine(), out input) && input != 'Y' && input != 'N') 
                 {
