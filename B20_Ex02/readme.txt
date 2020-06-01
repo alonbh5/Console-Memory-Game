@@ -1,10 +1,13 @@
-==========================Exercise Checking Report==========================
-Exercise No...........: 2
-First Student Details.: 312533698 - Alon Ben Harosh
-Second Student Details: 311119002 - Shira Ostrinsky
-Delivery Date.........: 31 - May - 2020
-Delivered In Delay....: No
-Delay Reason..........: -
-Visual Studio Version.: 2017
-Comments..............: -
-========================End Exercise Checking Report========================
+ To Play Game:
+ 1. Create New Game Object 
+ 2. While (IsGameOver)
+    {  
+      2.1. First Reveal 
+      2.2. Second Reveal 
+      2.3. Check Turn
+    }
+ To get Input From AI use GetInputFromAI
+ To get winner use getWinner 
+ To get score use  getScore
+ To Get StringBuilde of the Gameboard use ToStringBuilder (Array of Object (object[i]=pair # i))
+ NOTICE: Object X in Array of Object must have ToString Function!
